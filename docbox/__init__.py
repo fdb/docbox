@@ -40,7 +40,12 @@ def build_documentation(doc_dir, build_dir, template_dir=None, static_dir=None):
             fname, ext = os.path.splitext(file)
             if ext == '.html':
                 src_file = os.path.join(root, file)
-                dst_file = os.path.join(build_dir, file)
+                # Find the relative part of the source file.
+                # TODO: This looks and feels like a hack.
+                rel_file = src_file[len(doc_dir):]
+                if rel_file[0] == os.path.sep:
+                    rel_file = rel_file[1:]
+                dst_file = os.path.join(build_dir, rel_file)
                 _handle_file(src_file, dst_file)
 
     print "Copying static resources..."
