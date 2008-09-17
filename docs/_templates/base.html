@@ -1,0 +1,25 @@
+{% load docbox %}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<title>DocBox | {% block title %}Documentation{% endblock %}</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta http-equiv="imagetoolbar" content="no">
+	<meta name="MSSmartTagsPreventParsing" content="true">
+	<link rel="stylesheet" href="{{ MEDIA_URL }}/css/docs.css" type="text/css">
+</head>
+<body>
+<div id="wrap">
+<div id="header">
+	<h1>DocBox Documentation</h1>
+</div>
+<div id="content">
+{% block content %}
+Content here
+{% endblock %}
+</div>
+<div id="footer">
+	Generated at {% current_time %} by DocBox.
+</div>
+</div>
+</body>
