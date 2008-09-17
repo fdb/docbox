@@ -6,7 +6,7 @@ from django.template import Template, Context
 from django.template.loader import get_template
 
 def _handle_file(src_file, dst_file):
-    print src_file
+    print "Building %s" % src_file
     contents = open(src_file).read()
     wrapped_contents = '{%% extends "base.html" %%}\n{%% load docbox %%}\n{%% block content %%}\n%s\n{%% endblock %%}' % contents
     template = Template(wrapped_contents)
@@ -43,12 +43,14 @@ def build_documentation(doc_dir, build_dir, template_dir=None, static_dir=None):
                 dst_file = os.path.join(build_dir, file)
                 _handle_file(src_file, dst_file)
 
+    print "Copying static resources..."
     # Copy over the static resources
     try:
         shutil.copytree(static_dir, os.path.join(build_dir, '_static'))
     except OSError, err:
         if err.errno != 17: # 'file exists' error is to be expected
             raise err
+    print "Done.\nYour documentation is in %s." % build_dir
     
 if __name__=='__main__':
     import sys
