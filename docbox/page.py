@@ -40,12 +40,14 @@ class MetaParser(object):
                 self.attributes[key] = value
 
 class Page(object):
+    """A Page contains the contents and meta-information of a HTML document."""
     
     def __init__(self, html, title=None):
         self.html = html
         self.title = title
         
     def from_string(cls, html):
+        """Parse a page from a HTML string."""
         parser = MetaParser(html)
         parser.parse()
         title = parser.attributes.pop('title', None)
@@ -53,14 +55,20 @@ class Page(object):
     from_string=classmethod(from_string)
 
     def from_url(cls, url):
+        """Parse a page from a given relative URL.
+        
+        This does not load the page from an external resource,
+        but only works for internal URLs."""
         return cls.from_string(read_url(url))
     from_url=classmethod(from_url)
 
     def from_file(cls, fname):
+        """Parse a page from a file."""
         return cls.from_string(read_file(fname))
     from_file=classmethod(from_file)
     
     def render(self, request=None):
+        """Render the contents of the page."""
         # Prefix html with internal loads
         html = '''{%% load docbox %%}%s''' % self.html
         t = Template(html)

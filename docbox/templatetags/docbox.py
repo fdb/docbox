@@ -9,3 +9,6 @@ register.simple_tag(current_time)
 def hello_world():
     return "Hello, World!"
 register.simple_tag(hello_world)
+
+if __name__=='__main__':
+    print "main"
