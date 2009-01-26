@@ -1,0 +1,2 @@
+META_TAG_START = '{{'
+META_TAG_END = '}}'

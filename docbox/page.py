@@ -20,9 +20,8 @@ def read_file(fname):
 def read_url(url):
     return read_file(url_to_filename(url))
 
-META_TAG_START = '<!--'
-META_TAG_END = '-->'
-meta_re = re.compile('(%s\s*![a-zA-Z]+\s*\:.*?%s)' % (re.escape(META_TAG_START), re.escape(META_TAG_END)))
+from metatags import *
+meta_re = re.compile('(%s\s*![a-zA-Z]+\s*\:.*?%s)' % (re.escape(META_TAG_START), re.escape(META_TAG_END)), re.DOTALL)
 meta_inner_re = re.compile('!([a-zA-Z]+)\s*\:\s*(.*)')
 
 class MetaParser(object):
@@ -31,13 +30,16 @@ class MetaParser(object):
         self.attributes = {}
         
     def parse(self):
+        
         for bit in meta_re.split(self.html):
             if not bit: continue
             if bit.startswith(META_TAG_START):
                 inner = bit[len(META_TAG_START):-len(META_TAG_END)].strip()
                 match = meta_inner_re.search(inner)
-                key, value = match.groups()
-                self.attributes[key] = value
+                if match is not None:
+                    key, value = match.groups()
+                    print key, value
+                    self.attributes[key] = value
 
 class Page(object):
     """A Page contains the contents and meta-information of a HTML document."""
@@ -70,7 +72,9 @@ class Page(object):
     def render(self, request=None):
         """Render the contents of the page."""
         # Prefix html with internal loads
-        html = '''{%% load docbox %%}%s''' % self.html
+        html = re.sub(meta_re, '', self.html)
+        html = '''{%% load docbox %%}%s''' % html
+
         t = Template(html)
         if request is None:
             ctx = Context()
