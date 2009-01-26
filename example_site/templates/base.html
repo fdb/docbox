@@ -6,6 +6,9 @@
 	<title>DocBox | {% block title %}{% endblock %}</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link type="text/css" rel="stylesheet" media="all" href="{{ MEDIA_URL }}/css/base.css" />
+	<link type="text/css" rel="stylesheet" media="all" href="{{ MEDIA_URL }}/css/other.css" />
+	
+	{% block extrahead %}{% endblock %}
 </head> 
 <body>
 <div id="header">

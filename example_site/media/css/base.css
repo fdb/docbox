@@ -110,3 +110,9 @@ body {
 	font-weight: bold;
 	color: red;
 }
+
+div.examplecode { background: rgb(235,235,225); border: 1px solid #ddd; color: #555; padding: 2px 5px 2px 5px; }
+
+span.keyword { color: #530035; }
+span.identifier { color: red; }
+span.string { color: #ff0080;}

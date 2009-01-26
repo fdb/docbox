@@ -7,8 +7,10 @@ TEMPLATE_DEBUG = DEBUG
 ADMINS = ()
 MANAGERS = ADMINS
 
-DATABASE_ENGINE = 'sqlite3'
-DATABASE_NAME = 'example.db'
+DATABASE_USER = 'root'
+
+DATABASE_ENGINE = 'mysql'
+DATABASE_NAME = 'docboxdata'
 
 TIME_ZONE = 'America/Chicago'
 LANGUAGE_CODE = 'en-us'
@@ -16,6 +18,7 @@ SITE_ID = 1
 USE_I18N = True
 
 PROJECT_ROOT = os.path.dirname(__file__)
+sys.path.append(PROJECT_ROOT)
 DOCBOX_ROOT = os.path.dirname(PROJECT_ROOT)
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
 MEDIA_URL = '/media'
@@ -47,4 +50,12 @@ TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, 'templates'),)
 # Include docbox in the list of installed applications.
 INSTALLED_APPS = (
     'docbox',
+    'docboxdata.data',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.admin',
 )
+
+DMIGRATIONS_DIR = os.path.join(os.path.dirname(__file__), 'migrations')
