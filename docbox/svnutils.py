@@ -2,37 +2,37 @@ import os
 import pysvn
 import shutil
 from settings import DOCBOX_DOC_ROOT
-from docboxdata.data.models import Project, DocStatus
+from docboxdata.data.models import Project
 from fileutils import format_string
 
-def copy_files_to_working_copy():
-    client = pysvn.Client()
-    for docstatus in DocStatus.objects.all():
-        project = docstatus.project
-        filename = format_string(project.identifier)
-        f = os.path.join(DOCBOX_DOC_ROOT, filename + '.html')
-        doc_url = project.documentation_url.working_url
-        c = os.path.join(doc_url, filename + '.html')
-        path = os.path.dirname(c)
-        # create directories in working copy and put them in version control
-        if not os.path.exists(path):
-            p = ''
-            for l in filename.split('/')[:-1]:
-                p += '/%s' % l
-                if not os.path.exists(os.path.join(doc_url, p[1:])):
-                    client.mkdir(os.path.join(doc_url, p[1:]), '...')
-        shutil.copy(f, c)
-        if docstatus.type == 'C':
-            client.add(c)
+# def copy_files_to_working_copy():
+#     client = pysvn.Client()
+#     for docstatus in DocStatus.objects.all():
+#         project = docstatus.project
+#         filename = format_string(project.identifier)
+#         f = os.path.join(DOCBOX_DOC_ROOT, filename + '.html')
+#         doc_url = project.documentation_url.working_url
+#         c = os.path.join(doc_url, filename + '.html')
+#         path = os.path.dirname(c)
+#         # create directories in working copy and put them in version control
+#         if not os.path.exists(path):
+#             p = ''
+#             for l in filename.split('/')[:-1]:
+#                 p += '/%s' % l
+#                 if not os.path.exists(os.path.join(doc_url, p[1:])):
+#                     client.mkdir(os.path.join(doc_url, p[1:]), '...')
+#         shutil.copy(f, c)
+#         if docstatus.type == 'C':
+#             client.add(c)
 
-def delete_backup_files():
-    for docstatus in DocStatus.objects.filter(type='U'):
-        try:
-            filename = format_string(docstatus.project.identifier)
-            f = os.path.join(DOCBOX_DOC_ROOT, filename + '.copy')
-            os.remove(f)
-        except:
-            pass
+# def delete_backup_files():
+#     for docstatus in DocStatus.objects.filter(type='U'):
+#         try:
+#             filename = format_string(docstatus.project.identifier)
+#             f = os.path.join(DOCBOX_DOC_ROOT, filename + '.copy')
+#             os.remove(f)
+#         except:
+#             pass
 
 def apply_commit(commitString):
     copy_files_to_working_copy()

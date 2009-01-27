@@ -3,16 +3,10 @@ import shutil
 import codecs
 from page import Page, url_to_filename
 from settings import DOCBOX_DOC_ROOT
-from docboxdata.data.models import Project, DocStatus
+from docboxdata.data.models import Project
 
 def format_string(title):
     return title.lower().replace(' ', '_')
-
-def copyfile(project):
-    filename = format_string(project.identifier)
-    f = os.path.join(DOCBOX_DOC_ROOT, filename + '.html')
-    c = os.path.join(DOCBOX_DOC_ROOT, filename + '.copy')
-    shutil.copy(f, c)
 
 def read_from_file(identifier):
     try:

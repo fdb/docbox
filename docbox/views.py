@@ -15,7 +15,7 @@ from svnutils import *
 class ProjectForm(ModelForm):
     class Meta:
         model = Project
-        fields = ('name', 'identifier', 'description', 'homepage', 'source_url', 'documentation_url')
+        fields = ('name', 'identifier', 'description', 'homepage', 'src_url', 'doc_url')
 
 def view_index(request):
     return view(request, 'index')
@@ -60,7 +60,7 @@ def view_writer_with_form(request, url):
         project = None
     projects = Project.objects.all()
     documentation = ''
-    docstates = DocStatus.objects.all()
+#    docstates = DocStatus.objects.all()
 
     if request.META["REQUEST_METHOD"] == "POST":
         post = request.POST
@@ -77,16 +77,16 @@ def view_writer_with_form(request, url):
             project.identifier = format_string(project.identifier)
             project.save()
 
-            docstatus, created = DocStatus.objects.get_or_create(project=project, defaults={'type': type}) 
-            if created and type == 'C':
-                docstatus.save()
+#            docstatus, created = DocStatus.objects.get_or_create(project=project, defaults={'type': type}) 
+#            if created and type == 'C':
+#                docstatus.save()
 
-            if type == 'C' or read_from_file(project.identifier) != documentation:
-                if created and type == 'U':
-                    copyfile(project)
-                if write_to_file(documentation, project.identifier):
-                    if created and type == 'U':
-                        docstatus.save()
+            # if type == 'C' or read_from_file(project.identifier) != documentation:
+            #     if created and type == 'U':
+            #         copyfile(project)
+            #     if write_to_file(documentation, project.identifier):
+            #         if created and type == 'U':
+            #             docstatus.save()
             return HttpResponseRedirect("/writer/" + project.identifier + '/')
     elif project is not None:
         form = ProjectForm(instance = project)
@@ -95,7 +95,7 @@ def view_writer_with_form(request, url):
         form = ProjectForm()
         
     return render_to_response('docbox/view_writer.html', 
-        {'projects': projects, 'project': project, 'form': form, 'documentation': documentation, 'docstates': docstates}, 
+        {'projects': projects, 'project': project, 'form': form, 'documentation': documentation, }, 
         context_instance=RequestContext(request))
 
 if Project is not None:
