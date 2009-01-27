@@ -6,7 +6,11 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     (r'^$', 'docbox.views.view_index'),
-    (r'^writer(?P<url>[a-z0-9\-\_\/\.]{0,300})/$', 'docbox.views.view_writer'),
+    
+    (r'^writer/project/(?P<project_id>[a-z0-9\.]{0,300})/page(?P<page>[a-z0-9\/\-\.]{0,300})/$', 'docbox.views.view_writer_page'),
+    (r'^writer/project(?P<project_id>[a-z0-9\/\.]{0,300})/$', 'docbox.views.view_writer_project'),
+
+#    (r'^writer(?P<url>[a-z0-9\-\_\/\.]{0,300})/$', 'docbox.views.view_writer'),
     (r'^(?P<url>[a-z0-9\-\_\/\.]{1,300})/$', 'docbox.views.view'),
 
 )

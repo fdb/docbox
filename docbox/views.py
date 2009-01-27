@@ -1,4 +1,5 @@
 import os
+import codecs
 
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
@@ -7,7 +8,6 @@ from django.forms import ModelForm
 from settings import DOCBOX_DOC_ROOT
 
 from page import Page, url_to_filename
-
 
 from fileutils import *
 from svnutils import *
@@ -27,40 +27,63 @@ def view(request, url):
         page = Page.from_file(fname)
         page_content = page.render(request)
 
-        return render_to_response('docbox/view.html', {'page': page, 'page_content':page_content}, 
+        return render_to_response('docbox/view.html', {'page': page, 'page_content': page_content}, 
             context_instance=RequestContext(request))
     else:
         raise Http404()
 
-def handle_commit(post, project):
-    if post.has_key("commit"):
-        commitString = post.get("commitString", "")
-        apply_commit(commitString)
-        return HttpResponseRedirect("/writer/" + (project is not None and project.identifier + '/' or ''))
-
-    elif post.has_key("cancelCommit"):
-        cancel_commit()
-        if project is not None:
-            id = project.id
-            try:
-                Project.objects.get(id=id) # a newly created project won't exist anymore after cancellation so we have to check if it does.
-                return HttpResponseRedirect("/writer/" + project.identifier + '/')
-            except:
-                pass
-        return HttpResponseRedirect("/writer/")
-
-    return None
-    
-def view_writer_with_form(request, url):
-    if url is not None and url != '':
-        if url.startswith("/"):
-            url = url[1:]
-        project = get_object_or_404(Project, identifier=url)
+def view_writer_project(request, project_id):
+    if project_id is not None and project_id != '':
+        if project_id.startswith("/"):
+            project_id = project_id[1:]
+        project = get_object_or_404(Project, identifier=project_id)
+        form = ProjectForm(instance = project)
     else:
         project = None
+        form = ProjectForm()
+
     projects = Project.objects.all()
-    documentation = ''
-#    docstates = DocStatus.objects.all()
+
+    if request.META["REQUEST_METHOD"] == "POST":
+        post = request.POST
+        form = ProjectForm(post, instance=project)
+
+        if form.is_valid():
+            new_project = form.save(commit=False)
+            new_project.identifier = format_string(new_project.identifier)
+            new_project.save()
+            checkout(new_project)
+            return HttpResponseRedirect("/writer/project/" + new_project.identifier + '/')
+
+    return render_to_response('docbox/view_writer_project.html', 
+        {'form': form, 'projects': projects, 'project': project }, 
+        context_instance=RequestContext(request))
+
+def handle_commit(post, project):
+    filepath = project.file_path
+    if post.has_key("commit"):
+        commitString = post.get("commitString", "")
+        apply_commit(filepath, commitString)
+        return HttpResponseRedirect(project.absolute_url)
+    elif post.has_key("revert"):
+        apply_revert(filepath)
+        return HttpResponseRedirect(project.absolute_url)
+    else:
+        return None
+
+def view_writer_page(request, project_id, page):
+    is_new = page is None or page == ""
+    project = get_object_or_404(Project, identifier=project_id)
+
+    if not is_new:
+        if page.startswith("/"):
+            title = page = page[1:]
+        f = project.page_path(title)
+        if not os.path.exists(f):
+            raise Http404
+        documentation = read_from_file(f)
+    else:
+        documentation = ''
 
     if request.META["REQUEST_METHOD"] == "POST":
         post = request.POST
@@ -68,38 +91,20 @@ def view_writer_with_form(request, url):
         if commit is not None:
             return commit
 
-        form = ProjectForm(post, instance=project)
-        type = project is not None and 'U' or 'C'
+        title = is_new and post.get("page-name", "") or page
+        if title == "":
+            raise
         documentation = post.get("doc-content", "")
-
-        if form.is_valid():
-            project = form.save(commit=False)
-            project.identifier = format_string(project.identifier)
-            project.save()
-
-#            docstatus, created = DocStatus.objects.get_or_create(project=project, defaults={'type': type}) 
-#            if created and type == 'C':
-#                docstatus.save()
-
-            # if type == 'C' or read_from_file(project.identifier) != documentation:
-            #     if created and type == 'U':
-            #         copyfile(project)
-            #     if write_to_file(documentation, project.identifier):
-            #         if created and type == 'U':
-            #             docstatus.save()
-            return HttpResponseRedirect("/writer/" + project.identifier + '/')
-    elif project is not None:
-        form = ProjectForm(instance = project)
-        documentation = read_from_file(project.identifier)
-    else:
-        form = ProjectForm()
+        filepath = project.page_path(title)
+        write_to_file(filepath, documentation)
+        if is_new:
+            addFile(filepath)
+    changes = docChanges(project)
         
-    return render_to_response('docbox/view_writer.html', 
-        {'projects': projects, 'project': project, 'form': form, 'documentation': documentation, }, 
+    return render_to_response('docbox/view_writer_page.html', 
+        {'project': project, 'documentation': documentation, 'page': page, 'changes': changes }, 
         context_instance=RequestContext(request))
 
-if Project is not None:
-    view_writer = view_writer_with_form
 
 
 

@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}Write some docu{% endblock%}
+{% block extrahead %}
+<script src="/media/js/tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript">
+tinyMCE.init({
+	mode : "textareas",
+	theme : "advanced",
+    plugins : "safari",
+	content_css : "{{ MEDIA_URL }}/css/content.css",
+	editor_selector : "mceEditor",
+	theme_advanced_toolbar_location : "top",
+	theme_advanced_toolbar_align : "left",
+	theme_advanced_statusbar_location : "bottom",
+	theme_advanced_resizing : true,
+	setup : function(ed) {
+		// Gets executed after DOM to HTML string serialization
+		ed.onPostProcess.add(function(ed, o) {
+			// State get is set when contents is extracted from editor
+			if (o.get) {
+				// Replace all strong/b elements with em elements
+				o.content = o.content.replace(/<\/pre>\n<pre>/g, '\n');
+				o.content = o.content.replace(/&amp;nbsp;/g, ' ');
+			}
+		});
+	}
+});
+</script>
+{% endblock %}
+{% block content %}
+{% if docstates %}
+<form method='POST' action='.'>
+<div style="background:#ddddf3;padding: 10px 10px; margin: 0 0 10px 0; width:724px;">
+	Branch: <select><option>master</option><option>v1.0</option></select>
+	<span style="float:right">
+	<strong><a href="#" onclick="document.getElementById('commit').style.display='block';">{{ docstates|length }} documentation changes</a></strong>
+	</span>
+	<div style="display:none;" id="commit">
+	<div style="margin:10px 0 0 0;">
+		<ul>
+		    {% for docstatus in docstates %}
+			<li><a href="/writer/{{ docstatus.project.identifier }}/">{{ docstatus.project.identifier }}</a></li>
+			{% endfor %}
+		</ul>
+	</div>
+	<div style="margin:10px 0 0 0;"><textarea style="width:719px;height:100px;" name="commitString"></textarea></div>
+	<div>
+	<span style="float:right">
+	<input type="submit" name="cancelCommit" value="Cancel" />
+	<input type="submit" name="commit" value="Commit" />
+	</span>
+	</div>
+	<br style="clear:both;">
+	</div>
+</div>
+</form>
+{% endif %}
+
+<div id="pages">
+<h2>Project: <a href="/writer/project/{{ project.identifier }}/">{{ project.identifier }}</a></h2>
+<ul>
+{% for page in project.pages %}
+    <li><a href="/writer/project/{{ project.identifier }}/page/{{ page }}">{{ project.identifier }}/{{ page }}</a></li>
+{% endfor %}
+</ul>
+</div>
+
+<div id="project">
+<div class="yui-skin-sam"> 
+    <form method="post" action=".">
+        {% if changes %}
+        <div style="background:#ddddf3;padding: 10px 10px; margin: 0 0 10px 0; width:724px;">
+        	Branch: <select><option>master</option><option>v1.0</option></select>
+        	<span style="float:right">
+        	<strong><a href="#" onclick="document.getElementById('commit').style.display='block';">{{ changes|length }} documentation changes</a></strong>
+        	</span>
+        	<div style="display:none;" id="commit">
+        	<div style="margin:10px 0 0 0;">
+        		<ul>
+        		    {% for change in changes %}
+        			<li><a href="/writer/project/{{project.identifier}}/page/{{ change }}/">{{project.identifier}}/{{ change }}</a></li>
+        			{% endfor %}
+        		</ul>
+        	</div>
+        	<div style="margin:10px 0 0 0;"><textarea style="width:719px;height:100px;" name="commitString"></textarea></div>
+        	<div>
+        	<span style="float:right">
+        	<input type="submit" name="revert" value="Cancel" />
+        	<input type="submit" name="commit" value="Commit" />
+        	</span>
+        	</div>
+        	<br style="clear:both;">
+        	</div>
+        </div>{% endif %}
+
+        {% if page %}
+        <h2>Page title: {{ page }}</h2>
+        {% else %}
+        <label for="page_name">Page title:</label><input type="input" id="page_name" name="page-name" maxlength="200" value="{{ page }}" />
+        {% endif %}
+        <textarea id="docarea" name="doc-content" class="mceEditor" style="width: 742px; height: 350px;">
+            {{ documentation|safe }}
+        </textarea>
+        <input type="submit" value="Send" />
+    </form>
+</div>
+</div>
+{% endblock %}

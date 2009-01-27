@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Write some docu{% endblock%}
+{% block extrahead %}
+
+{% endblock %}
+{% block content %}
+
+<div id="projectlist">
+{% if projects %}
+    <h2>All projects</h2>
+    <ul>
+{% for project in projects %}
+        <li><a href="/writer/project/{{ project.identifier }}/">{{ project.identifier }}</a></li>
+{% endfor %}
+    </ul>
+{% endif %}
+</div>
+
+<div id="project">
+    <h2>{% if project %}{{ project.identifier }}{% else %}Create a new project{% endif %}</2>
+    <form method="post" action="." class="project-form">
+        <ul>
+            {{form.as_ul}}
+        </ul>
+        <input type="submit" value="Send" />
+    </form>
+</div>
+{% if project %}
+<div id="pages">
+{% if project.pages %}
+<h2>Project pages '{{ project.identifier }}'</h2>
+<ul>
+    <li><a href="/writer/project/{{ project.identifier }}/page/">Create new page</a></li>
+
+{% for page in project.pages %}
+<li class="newpage"><a href="/writer/project/{{ project.identifier }}/page/{{ page }}">{{ page }}</a></li>
+{% endfor %}
+</ul>
+{% else %}
+<ul>
+    <li><a href="/writer/project/{{ project.identifier }}/page/">Create new page</a></li>
+</ul>
+{% endif %}
+</div>
+{% endif %}
+
+{% endblock %}
+
