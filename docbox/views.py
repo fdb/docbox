@@ -75,6 +75,14 @@ def handle_commit(post, project):
         return None
 
 @login_required
+def list_mobs(request, project_id):
+    project = Project.objects.get(identifier=project_id)
+    
+    return render_to_response('docbox/view_mobs.html', 
+        {'project': project }, 
+        context_instance=RequestContext(request))
+
+@login_required
 def view_writer_page(request, project_id, page):
     is_new = page is None or page == ""
     project = get_object_or_404(Project, identifier=project_id)
