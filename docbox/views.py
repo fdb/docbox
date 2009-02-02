@@ -4,6 +4,8 @@ import codecs
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import Context, Template, RequestContext
+from django.contrib.auth.decorators import login_required
+
 from django.forms import ModelForm
 from settings import DOCBOX_DOC_ROOT
 
@@ -32,6 +34,7 @@ def view(request, url):
     else:
         raise Http404()
 
+@login_required
 def view_writer_project(request, project_id):
     if project_id is not None and project_id != '':
         if project_id.startswith("/"):
@@ -71,6 +74,7 @@ def handle_commit(post, project):
     else:
         return None
 
+@login_required
 def view_writer_page(request, project_id, page):
     is_new = page is None or page == ""
     project = get_object_or_404(Project, identifier=project_id)
