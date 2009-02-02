@@ -23,7 +23,10 @@ def addFile(path):
     
 def docChanges(project):
     client = pysvn.Client()
+
+    changes = [c.path for c in client.status(project.file_path)]
     changes = [c.path for c in client.status(project.file_path) if c.text_status != pysvn.wc_status_kind.normal]
-    changes = [os.path.splitext(os.path.basename(c))[0] for c in changes]
+    # this is hacky
+    changes = [os.path.splitext(os.path.basename(c))[0] for c in changes if os.path.splitext(os.path.basename(c))[1] == '.html']
     return changes
     
