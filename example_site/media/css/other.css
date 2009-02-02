@@ -1,17 +1,27 @@
-#content ul#projectlist { float:right; list-style: none; margin: 0; padding: 0; text-indent: 0; border: 1px dotted grey; width: 270px; margin-right: 35px; height: 160px; overflow: scroll;}
-#projectlist li { list-style-type: none; display: block; padding: 2px 0 3px 5px; }
-#projectlist li a { display: block;}
+#content { margin-left: 30px;}
 #content a { text-decoration: none; color: black; }
 #content a:hover { background-color: #ccedfb; }
-div.yui-skin-sam form div.meta { border: 1px dotted grey; width: 460px; margin: 10px 0;}
-#content div.yui-skin-sam form ul { margin: 0; padding: 0; list-style: none; background-color: #eeeeee;}
-div.yui-skin-sam form ul li { border-bottom: 1px dotted grey;}
-#projectlist li:hover , div.yui-skin-sam form ul li:hover { background-color: #ccedfb;}
-div.yui-skin-sam form ul li:last-child { border-bottom: none;}
-div.yui-skin-sam form ul li label, div.yui-skin-sam form ul li input { margin: 4px;}
-div.yui-skin-sam form ul li textarea { margin-top: 4px;}
-div.yui-skin-sam form ul li label { font-size: 9pt; display: inline-block; width: 140px; text-align: left; margin-left: 5px;}
-div.yui-skin-sam form ul textarea { height: 15px;}
-div.yui-skin-sam form ul input, div.yui-skin-sam form ul textarea, div.yui-skin-sam form ul select { width: 285px;}
-div.yui-skin-sam form ul li textarea, div.yui-skin-sam form ul select { margin-left: 4px; }
-#content div.yui-skin-sam form ul.errorlist { font-size: 9pt; color: red; list-style: none; margin: 0; padding: 0; margin-left: 160px; margin-top: 10px;}
+
+#projectlist { float: left ;}
+#projectlist ul { list-style: none; margin: 0; padding: 0; text-indent: 0;  width: 170px; }
+#projectlist ul li { list-style-type: none; display: block; padding: 2px 0 3px 5px; }
+#projectlist ul li a { display: block;}
+
+#project { float: left;}
+#project form { margin: 0; padding: 0;}
+#project form ul { margin: 10px 0; padding: 0; list-style: none; background-color: #eeeeee;}
+#project form ul li { border-bottom: 1px dotted grey; }
+#projectlist ul li:hover, #project form ul li:hover { background-color: #ccedfb;}
+#project form ul li:last-child { border-bottom: none;}
+#project form ul li label, #project form ul li input { margin: 4px;}
+#project form ul li textarea { margin-top: 4px;}
+#project form ul li label { font-size: 9pt; display: inline-block; width: 140px; text-align: left; margin-left: 5px;}
+#project form ul textarea { height: 15px;}
+#project form ul input, #project form ul textarea, #project form ul select { width: 285px;}
+#project form ul li textarea, #project form ul select { margin-left: 4px; }
+#project form ul.errorlist { font-size: 9pt; color: red; list-style: none; margin: 0; padding: 0; margin-left: 160px; margin-top: 10px;}
+
+#pages { float: left ;}
+#pages ul { list-style: none; margin: 0; padding: 0;}
+#pages ul li { list-style-type: none; display: block; padding: 2px 0 3px 5px; }
+#pages ul li a { display: block; }
