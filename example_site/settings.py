@@ -7,11 +7,6 @@ TEMPLATE_DEBUG = DEBUG
 ADMINS = ()
 MANAGERS = ADMINS
 
-DATABASE_USER = 'root'
-
-DATABASE_ENGINE = 'mysql'
-DATABASE_NAME = 'docboxdata'
-
 TIME_ZONE = 'America/Chicago'
 LANGUAGE_CODE = 'en-us'
 SITE_ID = 1
@@ -59,3 +54,16 @@ INSTALLED_APPS = (
 )
 
 DMIGRATIONS_DIR = os.path.join(os.path.dirname(__file__), 'migrations')
+
+LOGIN_URL = '/login/'
+
+def dependency_error(string):
+    sys.stderr.write('%s\n' % string)
+    sys.exit(1)
+
+# Load local settings.  This can override anything in here, but at the very
+# least it needs to define database connectivity.
+try:
+    from settings_local import *
+except ImportError:
+    dependency_error('Unable to read settings_local.py.')

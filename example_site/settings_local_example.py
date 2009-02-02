@@ -1,0 +1,3 @@
+DATABASE_USER = ''
+DATABASE_ENGINE = 'mysql'
+DATABASE_NAME = 'docboxdata'
