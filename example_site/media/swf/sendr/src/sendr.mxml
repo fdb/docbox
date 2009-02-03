@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:sendr="sendr.*" xmlns="*" horizontalAlign="center" applicationComplete="initVars()">
+	<mx:Script><![CDATA[
+		[Bindable]
+		public var link_type:String;
+		[Bindable]
+		public var link_id:String;
+		[Bindable]
+		public var editor_id:String;
+
+		// Assign values to new properties.
+		private function initVars():void {
+			fileUpload.link_type = Application.application.parameters.link_type;
+			fileUpload.link_id = Application.application.parameters.link_id;
+			fileUpload.editor_id = Application.application.parameters.editor_id;
+		}
+	]]></mx:Script>
+	<sendr:FileUpload id="fileUpload" creationComplete="fileUpload.init(uploadProgress, cancelUpload);" />
+	<mx:Style source="sendr.css" />
+	<mx:Panel>
+		<mx:HBox>
+			<mx:ProgressBar id="uploadProgress" label="" mode="manual" />
+			<mx:VBox>
+				<mx:Button id="startUpload" label="Browse..." click="fileUpload.startUpload();" />
+				<mx:Button id="cancelUpload" label="Cancel" click="fileUpload.cancelUpload();" enabled="false" />
+			</mx:VBox>
+		</mx:HBox>
+	</mx:Panel>
+</mx:Application>

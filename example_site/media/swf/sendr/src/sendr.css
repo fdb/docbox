@@ -1,0 +1,17 @@
+Application {
+    backgroundColor: #ffffff;
+    backgroundGradientColors: #ffffff, #ffffff;
+}
+
+Panel {
+    borderStyle: solid;
+    borderColor: #999999;
+    borderThickness: 1;
+    dropShadowEnabled: false;
+    cornerRadius: 0;
+    headerHeight: 10;
+}
+
+ProgressBar {
+    padding-top: 5;
+}

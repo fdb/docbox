@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="sendr" basedir="." default="dist">
+	<taskdef resource="flexTasks.tasks" classpath="${basedir}/lib/flexTasks.jar" />          
+	<property name="FLEX_HOME" value="/Users/stefan/flex/sdk"/>
+	<property name="APP_ROOT" value="src"/>
+	<property name="dist" value="dist"/>
+	<target name="init">
+		<mkdir dir="${dist}"/>
+	</target>
+	<target name="compile" depends="init">
+		<mxmlc file="${APP_ROOT}/sendr.mxml" output="${dist}/sendr.swf">
+			<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
+			<source-path path-element="${FLEX_HOME}/frameworks"/>
+		</mxmlc>
+	</target>
+	<target name="wrap" depends="init">
+		<html-wrapper
+			title="sendr"
+			height="200"
+			width="400"
+			application="app"
+			swf="sendr"
+			version-major="9"
+			version-minor="0"
+			version-revision="0"
+			history="true"
+			template="express-installation"
+			output="${dist}" />
+	</target>
+	<target name="dist" depends="compile,wrap" />
+	<target name="clean">
+    	<delete dir="${dist}"/>
+	</target>
+</project>
