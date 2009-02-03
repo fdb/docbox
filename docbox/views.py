@@ -126,6 +126,6 @@ def list_mobs(request, project_id):
     movies = project.get_movies()
     documents = project.get_documents()
 
-    return render_to_response('docbox/view_mobs.html', 
+    return render_to_response('docbox/list_mobs.html', 
         {'project': project, 'images': images, 'audio': audio, 'movies': movies, 'documents': documents, 'editor_id': editor_id }, 
         context_instance=RequestContext(request))
