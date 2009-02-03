@@ -13,7 +13,7 @@
     		var editor_id = inst.editorId;
     		var html = '';
     		html += '<div id="' + editor_id + '_link_div" class="_ml_link_div" style="background:#ccc;position:absolute;display:none;top:0;left:0;width:500px">';
-    		html += '<a href="#" class="lbCloseButton" onclick="tinyMCE.execInstanceCommand(\'' + editor_id + '\', \'mlLinkCancel\', false);"><img src="/media/js/tiny_mce/plugins/mnml/img/close.gif" alt="Close" /></a>';
+    		html += '<a href="#" class="lbCloseButton" onclick="tinyMCE.execInstanceCommand(\'' + editor_id + '\', \'mlLinkCancel\');"><img src="/media/js/tiny_mce/plugins/mnml/img/close.gif" alt="Close" /></a>';
     		html += '<div id="' + editor_id + '_link_pages"></div>';
     		html += '</div>';		
     		return html;
@@ -22,7 +22,7 @@
     		var editor_id = inst.editorId;
     		var html = '';
     		html += '<div id="' + editor_id + '_image_div" class="_ml_img_div" style="background:#ccc;position:absolute;display:none;top:0;left:0;width:500px">';
-    		html += '<a href="#" class="lbCloseButton" onclick="tinyMCE.activeEditor.execCommand(\'mlImageCancel\');"><img src="/media/js/tiny_mce/plugins/mnml/img/close.gif" alt="Close" /></a>';
+    		html += '<a href="#" class="lbCloseButton" onclick="tinyMCE.execInstanceCommand(\'' + editor_id + '\', \'mlImageCancel\');"><img src="/media/js/tiny_mce/plugins/mnml/img/close.gif" alt="Close" /></a>';
     		html += '<div id="' + editor_id + '_image_inner"></div>';
     		html += '</div>';
     		return html;
@@ -48,6 +48,12 @@
 			ed.addCommand('mlImageCancel', function() {
 				var image_div = document.getElementById(editor_id + '_image_div');
 				lbHide(image_div);
+			});
+			
+			ed.addCommand('mlImageCreate', function(value) {
+                ed.execCommand('insertimage', false, value);
+                ed.execCommand('mlImageCancel');
+                return true;
 			});
 
 			// Register mnml button
@@ -86,4 +92,23 @@ function _mlGetProjectIdentifier() {
 	var url_parts = document.location.href.split('/');
 	// Project identifier is fourth from the right: "projectid" 
 	return url_parts[url_parts.length - 4]; 
+}
+
+function _ml_tab_switch(new_tab_id) {
+    var content_el = document.getElementById("_ml_content_" + new_tab_id);    
+    var content_nodes = content_el.parentNode.getElementsByTagName('div');
+    for(var i=0;i<content_nodes.length;i++) {
+        if (content_nodes[i].className == '_ml_tab_content') {
+            content_nodes[i].style.display = 'none';
+        }
+    }
+    content_el.style.display = 'block';
+
+    var tab_el = document.getElementById("_ml_tab_" + new_tab_id);    
+    var tab_nodes = tab_el.parentNode.getElementsByTagName('li');
+    for(var i=0;i<tab_nodes.length;i++) {
+        tab_nodes[i].className = 'none';
+    }
+    tab_el.className = '_ml_current';
+    
 }

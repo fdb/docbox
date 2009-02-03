@@ -2,6 +2,13 @@ from django.db import models
 import os
 from settings import DOCBOX_DOC_ROOT
 
+FILE_TYPE_MAPPINGS = {
+    'img': ['.jpg', '.gif', '.png'],
+    'mov': ['.mov', '.avi'],
+    'aud': ['.mp3'],
+    'doc': ['.pdf', '.xls', '.doc']
+}
+
 class Project(models.Model):
     name = models.CharField(max_length=120)
     identifier = models.CharField(max_length=30, unique=True)
@@ -23,14 +30,32 @@ class Project(models.Model):
     def page_path(self, page):
         return os.path.join(DOCBOX_DOC_ROOT, self.identifier, page + '.html')
 
-    def pages(self):
+    def find_project_files_by_ext(self, extList, with_extension=True):
         li = []
-        for root, dirs, files in os.walk(os.path.join(DOCBOX_DOC_ROOT, self.identifier)):
+        for root, dirs, files in os.walk(self.file_path):
             for f in files:
                 fname, ext = os.path.splitext(f)
-                if fname != "" and ext == '.html':
-                    li.append(fname)
+                if fname != "" and ext.lower() in extList:
+                    if with_extension:
+                        li.append(f)
+                    else:
+                        li.append(fname)
         return li
+
+    def pages(self):
+        return self.find_project_files_by_ext(['.html'], False)
+        
+    def get_images(self):
+        return self.find_project_files_by_ext(FILE_TYPE_MAPPINGS['img'])
+        
+    def get_audio(self):
+        return self.find_project_files_by_ext(FILE_TYPE_MAPPINGS['aud'])
+
+    def get_movies(self):
+        return self.find_project_files_by_ext(FILE_TYPE_MAPPINGS['mov'])
+
+    def get_documents(self):
+        return self.find_project_files_by_ext(FILE_TYPE_MAPPINGS['doc'])
     
     def __unicode__(self):
         if self.name:

@@ -1,0 +1,274 @@
+/* ml */
+._ml_bar {
+	background: #f4f4f4;
+	border: 1px solid #ccc;
+	border-bottom: 0;
+	padding: 5px
+}
+
+._ml_iframe {
+	margin: 2px 0;
+	padding: 2px 3px;
+	border: 1px solid #ccc;
+}
+
+._ml_bar a img {
+	margin: 1px;
+	border: 0
+}
+
+._ml_bar a img:hover {
+	border: 1px solid #eee;
+	margin: 0;
+}
+
+._ml_bar span {
+	margin-left: 10px;
+}
+
+._ml_link_div {
+	/*height: 300px;*/	
+}
+
+._ml_link_div, ._ml_img_div {
+	border-top:0;
+	border-right:2px solid #666;
+	border-bottom:2px solid #666;
+	border-left: 1px solid #999;
+	position: absolute;
+	padding: 10px;
+	background:#ddd !important;
+}
+
+._ml_link_div h1 {
+	font-size: 12px;
+	margin: 10px 0 5px 0;
+	padding:0
+}
+
+._ml_link_div ul, ._ml_img_div ul {
+	margin:0;
+	padding: 0;
+	list-style-type:none;
+}
+
+._ml_link_div li {
+	margin:0 5px 0 0;
+	padding:2px;
+	float:left;
+	width: 100px;
+	overflow: hidden;
+	border: 1px solid #888;
+	border-right: 2px solid #666;
+	border-bottom: 2px solid #666;
+	cursor:pointer;
+	background:#eee;
+}
+
+._ml_link_div br, ._ml_img_div br {
+	clear:both;
+}
+
+._ml_link_div hr, ._ml_img_div hr {
+	margin:10px 0 10px 0;
+	border: 1px solid #999;
+}
+
+._ml_status {
+	background: #eee;
+	border: 1px solid #666;
+	border-top:0;
+	padding: 5px;
+	height: 20px;
+	overflow: hidden
+}
+
+._ml_status_div li {
+	border: 1px solid #999;
+}
+
+._ml_wrap {
+	width:610px;
+	margin-left: 108px;
+}
+
+#_ml_tab_header {
+	float: left;
+	width: 100%;
+	font-size: 93%;
+	border-bottom: 1px solid #ccc;
+	line-height: normal;
+}
+
+#_ml_tab_header ul {
+	margin: 0;
+	padding: 10px 10px 0;
+	list-style: none;
+}
+
+#_ml_tab_header li {
+	list-style: none;
+	float: left;
+	border-left: 1px solid #777;
+	border-top: 1px solid #777;
+	border-right: 1px solid #777;
+	border-bottom: none;
+	margin: 0 0 0 5px;
+	padding: 0;
+}
+
+#_ml_tab_header a {
+	float:left;
+	display:block;
+	padding:2px 5px 2px 5px;
+	text-decoration:none;
+	font-weight:bold;
+	color:#666;
+	white-space: nowrap;
+}
+
+#_ml_tab_header a:hover {
+	color:#333;
+	background:#eee;
+}
+
+#_ml_tab_header ._ml_current {
+	background:#fff;
+	position:relative;
+	top:1px;
+}
+
+#_ml_tab_header ._ml_current a {
+	background:#fff;
+	color:#333;
+}
+
+#_ml_tab_content {
+	clear:both;
+	margin: 0 0 0 0;
+	padding: 5px 15px 0 15px;
+	background: #fcfcfc;
+	border-bottom: 1px solid #ccc;
+	height: 185px;
+	overflow-y:scroll;
+}
+
+#_ml_tab_content table {
+	width: 100%;
+}
+
+#_ml_tab_content table tr {
+	border-bottom: 1px solid #999;
+}
+
+#_ml_tab_content table td {
+	text-align: left;
+}
+
+#_ml_tab_content a img { border: 0;}
+
+#_ml_content_url {
+	padding:10px 0 15px 0;
+}
+
+
+#_ml_mobs li {
+	border: 1px solid #ccc;
+}
+
+#_ml_upload_form {
+	clear: both;
+	margin: 10px 0 0 0;
+}
+
+._ml_img_iframe {
+	width: 100%;
+	height: 240px;
+}
+
+._ml_mobs_iframe {
+	background: #eee;
+}
+
+._ml_mobs ul { 
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+._ml_mobs li {
+	list-style: none;
+	float: left;
+	position: relative;
+	padding: 2px;
+	background: #eee;
+	margin: 0 5px 0 0;
+	border: 1px solid #ccc;
+	cursor:pointer;
+}
+
+li ._ml_img_delete {
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 2px 1px 1px 2px;
+	border-right: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	background: #fff;	
+}
+
+._ml_mob_thumb {
+	padding: 2px;
+	border: 1px solid #ccc;	
+}
+
+td ._ml_img_delete {
+	padding: 2px 1px 1px 2px;
+	text-align: right; 
+}
+
+._ml_no_mobs {
+	margin: 20px 0 0 0;
+	font-style: oblique;
+	color: #888;
+}
+
+#_ml_upload_progress {
+	margin: 0 0 0 10px;
+}
+
+#_ml_save_first {
+	padding: 20px 10px 20px 10px;
+	font-weight: bold;
+	
+}
+
+._ml_img_iframe {
+	width: 100%;
+	height: 240px;
+}
+
+
+
+
+#lbLightbox{
+	background-color:#eee;
+	padding: 10px;
+	border-bottom: 2px solid #666;
+	border-right: 2px solid #666;
+	}
+	
+.lbCloseButton{ position:absolute; top: 0; right:0; }
+.lbCloseButton img { border: none; }
+
+#lbLightbox img{ border: none; clear: both;} 
+#lbOverlay img{ border: none; }
+
+#lbOverlay { background-image: url(/media/images/overlay.png); }
+
+* html #lbOverlay{
+	background-color: #333;
+	back\ground-color: transparent;
+	background-image: url(blank.gif);
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/media/images/overlay.png", sizingMethod="scale");
+	}
