@@ -16,8 +16,7 @@ package sendr {
         private var btn:Button;
 
         // Parts of the link
-        public var link_type:String;
-        public var link_id:String;
+        public var project_id:String;
         public var editor_id:String;
 
         public function FileUpload() {
@@ -63,7 +62,7 @@ package sendr {
          */
         private function selectHandler(event:Event):void {
             var request:URLRequest = new URLRequest();
-            request.url = '/mnml/upload/' + this.link_type + '/' + this.link_id + '/?editor_id=' + this.editor_id;
+            request.url = '/mnml/upload/' + this.project_id + '/?editor_id=' + this.editor_id;
             fr.upload(request);
         }
 
