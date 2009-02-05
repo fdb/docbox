@@ -37,12 +37,16 @@
 			// Register the command so that it can be invoked by using tinyMCE.activeEditor.execCommand('mceMNML');
             Mnml.initInstance(ed);
 		    var editor_id = ed.editorId;
-			ed.addCommand('mceMNML', function() {
+			ed.addCommand('mlImage', function() {
 				var image_div = document.getElementById(editor_id + '_image_div');
 				var project_id = _mlGetProjectIdentifier();
 				var img_url = '/mnml/mobs/' + project_id + '/?editor_id=' + editor_id;
 				new Ajax.Updater(editor_id + "_image_inner", img_url, {asynchronous:true, method:'get'});
 				lbShow(image_div);
+			});
+			
+			ed.addCommand('mlUploadDone', function() {
+			   ed.execCommand('mlImage'); 
 			});
 
 			ed.addCommand('mlImageCancel', function() {
@@ -59,7 +63,7 @@
 			// Register mnml button
 			ed.addButton('mnml', {
 				title : 'mnml.desc',
-				cmd : 'mceMNML',
+				cmd : 'mlImage',
 				image : url + '/img/image.gif'
 			});
 
