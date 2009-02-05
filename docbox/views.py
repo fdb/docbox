@@ -8,11 +8,12 @@ from django.contrib.auth.decorators import login_required
 from django.views.static import serve
 
 from django.forms import ModelForm
-from settings import DOCBOX_DOC_ROOT
+from settings import DOCBOX_DOC_ROOT, DEBUG
 
 from page import Page, url_to_filename
 
 from fileutils import *
+from filename import clean_filename
 from svnutils import *
 
 class ProjectForm(ModelForm):
@@ -116,6 +117,80 @@ def view_writer_page(request, project_id, page):
         {'project': project, 'documentation': documentation, 'page': page, 'changes': changes }, 
         context_instance=RequestContext(request))
 
+FILE_TYPE_MAPPINGS = {
+    '.jpg':'img',
+    '.gif':'img',
+    '.png':'img',
+    '.png':'img',
+    '.mov':'mov',
+    '.avi':'mov',
+    '.mp3':'aud',
+    '.pdf':'doc',
+    '.xls':'doc',
+    '.doc':'doc'
+}
+
+def _type_from_filename(fname):
+    ext = os.path.splitext(fname)[1].lower()
+    return FILE_TYPE_MAPPINGS.get(ext.lower(), None)
+
+# in the case of a POST request the flash uploader won't send the user's cookie so no login validation can be performed
+# this explains the absence of 'login_required' here...
+def upload(request, project_id):
+    try:
+        editor_id = request.GET['editor_id']
+        project = Project.objects.get(identifier=project_id)
+
+        if request.method == 'GET':
+            return render_to_response('mnml/upload.html', 
+                {'project_id': project_id, 'editor_id': editor_id }, 
+                context_instance=RequestContext(request))
+        elif request.method == 'POST':
+            mob_path = project.file_path
+            try:
+                os.makedirs(mob_path)
+                print "ok"
+            except OSError, (errno, strerror):
+                print "not ok"
+                if errno != 17: # File already exists, in this case, the directory.
+                    _log("=ERR=", "makedirs", errno, strerror, mob_path)
+                    raise strerror
+            mob_file = request.FILES['Filedata']
+            fname = mob_file.name
+            content_type = _type_from_filename(fname)
+            raw_contents = mob_file.read()
+            clean_fname = clean_filename(fname)
+
+            if content_type == "mov":
+                pass
+            #     _upload_movie(link_type, link_id, mob_path, clean_fname, raw_contents)
+            elif content_type == "img":
+                pass
+            #     _upload_image(link_type, link_id, mob_path, clean_fname, raw_contents)
+            elif content_type == "aud":
+                pass
+            #     _upload_audio(link_type, link_id, mob_path, clean_fname, raw_contents)
+            elif content_type == "doc":
+                pass
+            #     _upload_document(link_type, link_id, mob_path, clean_fname, raw_contents)
+            else:
+                ext = os.path.splitext(fname)[1].lower()
+                # _log("unknown filetype", ext, clean_fname)
+                # todo: make sure this gets mentioned to the user
+                return HttpResponse("Unknown filetype %s" % ext, status=400)
+
+#            _log("upload_done", link_type, link_id, clean_fname)
+            return render_to_response('mnml/upload_done.html', 
+                {'project_id': project_id, 'editor_id': editor_id }, 
+                context_instance=RequestContext(request))
+    except:
+        if DEBUG:
+            import sys
+            import traceback
+            etype, value, tb = sys.exc_info()
+            # _log("=ERR= %s" % '\n'.join(traceback.format_exception(etype, value, tb)))
+            traceback.print_exception(etype, value, tb)
+
 @login_required
 def list_mobs(request, project_id):
     project = Project.objects.get(identifier=project_id)
@@ -126,6 +201,6 @@ def list_mobs(request, project_id):
     movies = project.get_movies()
     documents = project.get_documents()
 
-    return render_to_response('docbox/list_mobs.html', 
+    return render_to_response('mnml/list_mobs.html', 
         {'project': project, 'images': images, 'audio': audio, 'movies': movies, 'documents': documents, 'editor_id': editor_id }, 
         context_instance=RequestContext(request))
