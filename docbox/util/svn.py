@@ -1,6 +1,5 @@
 import os
 import pysvn
-import shutil
 
 def apply_commit(project_path, commitString):
     client = pysvn.Client()
