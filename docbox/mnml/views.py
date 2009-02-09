@@ -55,15 +55,10 @@ def upload(request, project_id):
             raw_contents = mob_file.read()
             clean_fname = clean_filename(fname)
 
-            if content_type == "mov":
-                pass
-            #     _upload_movie(link_type, link_id, mob_path, clean_fname, raw_contents)
+            if content_type in ["mov", "aud", "doc"]:
+                _upload_mob(mob_path, clean_fname, raw_contents)
             elif content_type == "img":
                 _upload_image(mob_path, clean_fname, raw_contents)
-            elif content_type == "aud":
-                _upload_audio(mob_path, clean_fname, raw_contents)
-            elif content_type == "doc":
-                _upload_document(mob_path, clean_fname, raw_contents)
             else:
                 ext = os.path.splitext(fname)[1].lower()
                 # _log("unknown filetype", ext, clean_fname)
@@ -106,13 +101,7 @@ def _upload_image(mob_path, clean_fname, raw_contents):
     image_util.universal_resize(img, 550, 550).save(dest_fname)
     image_util.universal_resize(img, 100, 100).save(thumb_fname)
 
-def _upload_audio(mob_path, clean_fname, raw_contents):
-    dest_fname = os.path.join(mob_path, clean_fname)
-    file = open(dest_fname, 'wb')
-    file.write(raw_contents)
-    file.close()
-
-def _upload_document(mob_path, clean_fname, raw_contents):
+def _upload_mob(mob_path, clean_fname, raw_contents):
     dest_fname = os.path.join(mob_path, clean_fname)
     file = open(dest_fname, 'wb')
     file.write(raw_contents)

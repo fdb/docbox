@@ -6,6 +6,8 @@ class Mob(object):
         self.project = project
         self.file_name = file_name
         self.type = type
+        self.width = 320
+        self.height = 240
     
     def get_url(self):
         return "/project/%s/%s" % (self.project.identifier, self.file_name)

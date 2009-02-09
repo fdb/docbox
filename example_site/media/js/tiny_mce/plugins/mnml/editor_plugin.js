@@ -50,6 +50,7 @@
 			});
 
 			ed.addCommand('mlImageCancel', function() {
+    		    var editor_id = ed.editorId;
 				var image_div = document.getElementById(editor_id + '_image_div');
 				lbHide(image_div);
 			});
@@ -76,6 +77,39 @@
 				return true;
 			});
 			
+			ed.addCommand('mlMovieEmbed', function(value) {
+    		    var editor_id = ed.editorId;
+				var movie_url = document.getElementById('id_' + editor_id + '_movie_url').value;
+				if (movie_url.match(/^http:\/\/\S+\.youtube\.com/)) {
+					// Standard YouTube format.
+					var width = 480;
+					var height = 395;
+					var full_url = movie_url;
+					var html = ''
+						+ '<img class="movie_embedded" src="/media/img/blank.gif" title="' + full_url + '" '
+						+ 'width="' + width + '" height="' + height + '" />\n';
+					ed.execCommand('inserthtml', false, html);
+    				ed.execCommand('mlImageCancel');
+				} else {
+					alert('This is not a valid YouTube URL.');
+					var el = document.getElementById('id_' + editor_id + '_movie_url');
+					el.value = '';
+					el.focus();
+				}
+				return true;
+			});
+			
+			ed.addCommand('mlMovieCreate', function(value) {
+				var width = value.width;
+				var height = value.height;
+				var html = ''
+					+ '<img class="movie_file" src="/media/images/blank.gif" title="' + value.url + '" '
+					+ 'width="' + width + '" height="' + height + '" />\n';
+				ed.execCommand('inserthtml', false, html);
+				ed.execCommand('mlImageCancel');
+				return true;
+			});
+
 			// Register mnml button
 			ed.addButton('mnml', {
 				title : 'mnml.desc',

@@ -40,12 +40,19 @@
         </div>
 	    <div id="_ml_content_movies" class="_ml_tab_content" style="display:none">
             <div class="_ml_mobs">
+				<form method="get" action="#" onsubmit="tinyMCE.execInstanceCommand('{{ editor_id }}', 'mlMovieEmbed', false); return false;">
+					<label for="id_{{ editor_id }}_movie_url">YouTube URL:</label>
+					<input type="text" size="30" id="id_{{ editor_id }}_movie_url" name="movie_url" />
+					<input type="submit" value="Embed" />
+				</form>
                 {% if movies %}
-                <ul>
+                <table>
                 {% for movie in movies %}
-                    <li>{{ movie }}</li>
+                    <tr>
+						<td><a href="#" onclick="tinyMCE.execInstanceCommand('{{ editor_id }}', 'mlMovieCreate', {'url':'{{ movie.get_url }}', 'width':{{ movie.width }}, 'height':{{ movie.height }}});">{% embed_thumb movie %}</a></td>
+                    </tr>
                 {% endfor %}
-                </ul>
+                </table>
                 {% else %}
                 <div class="_ml_no_mobs">No movies found.</div>
                 {% endif %}
