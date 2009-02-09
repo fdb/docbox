@@ -45,9 +45,8 @@ class Project(models.Model):
         return self.find_project_files_by_ext(['.html'], False)
         
     def get_images(self):
-        THUMB_PREFIX = "thumb-"
         images = self.find_project_files_by_ext(FILE_TYPE_MAPPINGS['img'])
-        images = [{'large': img, 'thumb': "%s%s" % (THUMB_PREFIX, img)} for img in images if not img.startswith(THUMB_PREFIX)]
+        images = [img for img in images if not img.startswith('thumb-')]
         return images
         
     def get_audio(self):

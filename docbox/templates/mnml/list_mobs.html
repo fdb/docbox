@@ -1,3 +1,4 @@
+{% load embed %}
 <div id="_ml_tabs">
     <div id="_ml_tab_header">
     	<ul>
@@ -14,7 +15,7 @@
                 {% if images %}
                 <ul>
                 {% for image in images %}
-                    <li><a href="#" onclick="tinyMCE.execInstanceCommand('{{editor_id}}', 'mlImageCreate', '../../{{ image.large }}');"><img src="{{ project.absolute_url }}{{ image.thumb }}" /></a></li>
+                    <li><a href="#" onclick="tinyMCE.execInstanceCommand('{{ editor_id }}', 'mlImageCreate', '{{ image.get_url }}');">{% embed_thumb image %}</a></li>
                 {% endfor %}
                 </ul>
                 {% else %}
@@ -51,11 +52,13 @@
 	    <div id="_ml_content_documents" class="_ml_tab_content" style="display:none">
             <div class="_ml_mobs">
                 {% if documents %}
-                <ul>
-                {% for document in documents %}
-                    <li>{{ document }}</li>
+                <table>
+                {% for doc in documents %}
+                    <tr>
+                        <td><a href="#" onclick="tinyMCE.execInstanceCommand('{{ editor_id }}', 'mlDocCreate', '{{ doc.get_url }}');">{% embed_thumb doc %}</a></td>
+                    </tr>
                 {% endfor %}
-                </ul>
+                </table>
                 {% else %}
                 <div class="_ml_no_mobs">No documents found.</div>
                 {% endif %}

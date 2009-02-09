@@ -60,6 +60,15 @@
                 return true;
 			});
 
+			ed.addCommand('mlDocCreate', function(value) {
+				var url_parts = value.split('/');
+				var fname = url_parts[url_parts.length-1];
+				var doc_html = '<a class="doclink" href="' + value + '"><img src="/media/images/doc.gif" alt="Document" width="9" height="11">' + fname + '</a>';
+				ed.execCommand('inserthtml', false, doc_html);
+				ed.execCommand('mlImageCancel');
+				return true;
+			});
+
 			// Register mnml button
 			ed.addButton('mnml', {
 				title : 'mnml.desc',
