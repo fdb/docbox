@@ -6,7 +6,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     (r'^$', 'docbox.views.view_index'),
     (r'^writer/project/(?P<project_id>[a-z0-9\.]{0,300})/page(?P<page>[a-z0-9\/\-\.]{0,300})/$', 'docbox.views.view_writer_page'),
-    (r'^writer/project(?P<project_id>[a-z0-9\/\.]{0,300})/(?P<filename>[a-z0-9\/\-\.]{0,300}(.jpg|.png|.gif|.pdf|.doc|.xls))$', 'docbox.views.static_serve'),
+    (r'^project(?P<project_id>[a-z0-9\/\.]{0,300})/(?P<filename>[a-z0-9\/\-\.]{0,300}(.jpg|.png|.gif|.pdf|.doc|.xls))$', 'docbox.views.static_serve'),
     (r'^writer/project(?P<project_id>[a-z0-9\/\.]{0,300})/$', 'docbox.views.view_writer_project'),
     (r'^mnml/mobs/(?P<project_id>[a-z0-9\.]{0,300})/$', 'docbox.mnml.views.list_mobs'),
     (r'^mnml/upload/(?P<project_id>[a-z0-9\.]{0,300})/$', 'docbox.mnml.views.upload'),

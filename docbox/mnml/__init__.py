@@ -8,7 +8,7 @@ class Mob(object):
         self.type = type
     
     def get_url(self):
-        return "../../%s" % self.file_name
+        return "/project/%s/%s" % (self.project.identifier, self.file_name)
 
     def get_thumb_fname(self):
         if self.type == 'mov':          
@@ -17,4 +17,4 @@ class Mob(object):
             return "thumb-%s" % self.file_name        
 
     def get_thumb_url(self):
-        return "../../%s" % self.get_thumb_fname()
+        return "/project/%s/%s" % (self.project.identifier, self.get_thumb_fname())
