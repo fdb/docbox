@@ -1,5 +1,6 @@
 build
 docs
 example_site/settings_local.py
+example_site/media/swf/sendr/dist/
 *.pyc
 .DS_Store
