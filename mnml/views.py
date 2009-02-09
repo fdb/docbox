@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from docboxdata.data.models import Project
 from docbox.util import image as image_util
 from docbox.util.filename import clean_filename
-from docbox.mnml import Mob
+from docbox.mnml.mobs import Mob
 
 FILE_TYPE_MAPPINGS = {
     '.jpg':'img',
