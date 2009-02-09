@@ -1,4 +1,6 @@
 import os
+from PIL import Image
+from cStringIO import StringIO
 import codecs
 
 from django.http import Http404, HttpResponse, HttpResponseRedirect
@@ -165,8 +167,7 @@ def upload(request, project_id):
                 pass
             #     _upload_movie(link_type, link_id, mob_path, clean_fname, raw_contents)
             elif content_type == "img":
-                pass
-            #     _upload_image(link_type, link_id, mob_path, clean_fname, raw_contents)
+                _upload_image(project_id, mob_path, clean_fname, raw_contents)
             elif content_type == "aud":
                 pass
             #     _upload_audio(link_type, link_id, mob_path, clean_fname, raw_contents)
@@ -204,3 +205,45 @@ def list_mobs(request, project_id):
     return render_to_response('mnml/list_mobs.html', 
         {'project': project, 'images': images, 'audio': audio, 'movies': movies, 'documents': documents, 'editor_id': editor_id }, 
         context_instance=RequestContext(request))
+
+def size_for(width, height, maxwidth=None, maxheight=None):
+    """Returns a new width and height pair that fall inside of the given maximum width/height.
+    Note that if the given width and height are both smaller than maxwidth and maxheight,
+    they are simply returned.
+    """
+    if maxheight is None or (maxwidth is not None and width > maxwidth and width > height):
+        scale = float(maxwidth) / width
+        return ( int(width * scale), int(height * scale) )
+    elif maxwidth is None or (maxheight is not None and height > maxheight and height >= width):
+        scale = float(maxheight) / height
+        return ( int(width * scale), int(height * scale) )
+    else:
+        return width, height        
+
+def universal_resize(img, maxwidth, maxheight):
+    """Given a target PIL image, returns a resized version up to the maximum width and height.
+    Will only scale images down, not enlarge them.
+    - img: original image
+    - maxwidth: maximum width of the new image
+    - maxheight: maximum height of the new image
+    """
+    width, height = img.size
+    new_width, new_height = size_for(width, height, maxwidth, maxheight)
+    resized_img = img.resize( (new_width, new_height), Image.ANTIALIAS )
+    return resized_img
+
+def _upload_image(project_id, mob_path, clean_fname, raw_contents):
+    dest_fname = os.path.join(mob_path, clean_fname)
+    print dest_fname
+    thumb_fname = os.path.join(mob_path, "thumb-" + clean_fname)
+    print thumb_fname
+
+    sio = StringIO(raw_contents)
+
+    img = Image.open(sio)
+    universal_resize(img, 550, 550).save(dest_fname)
+    universal_resize(img, 100, 100).save(thumb_fname)
+    print img
+
+    return True
+

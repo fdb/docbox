@@ -32,21 +32,23 @@ class Project(models.Model):
 
     def find_project_files_by_ext(self, extList, with_extension=True):
         li = []
-        for root, dirs, files in os.walk(self.file_path):
-            for f in files:
-                fname, ext = os.path.splitext(f)
-                if fname != "" and ext.lower() in extList:
-                    if with_extension:
-                        li.append(f)
-                    else:
-                        li.append(fname)
+        for f in os.listdir(self.file_path):
+            fname, ext = os.path.splitext(f)
+            if fname != "" and ext.lower() in extList:
+                if with_extension:
+                    li.append(f)
+                else:
+                    li.append(fname)
         return li
 
     def pages(self):
         return self.find_project_files_by_ext(['.html'], False)
         
     def get_images(self):
-        return self.find_project_files_by_ext(FILE_TYPE_MAPPINGS['img'])
+        THUMB_PREFIX = "thumb-"
+        images = self.find_project_files_by_ext(FILE_TYPE_MAPPINGS['img'])
+        images = [{'large': img, 'thumb': "%s%s" % (THUMB_PREFIX, img)} for img in images if not img.startswith(THUMB_PREFIX)]
+        return images
         
     def get_audio(self):
         return self.find_project_files_by_ext(FILE_TYPE_MAPPINGS['aud'])

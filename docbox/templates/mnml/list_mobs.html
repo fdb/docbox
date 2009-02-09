@@ -14,7 +14,7 @@
                 {% if images %}
                 <ul>
                 {% for image in images %}
-                    <li><a href="#" onclick="tinyMCE.execInstanceCommand('{{editor_id}}', 'mlImageCreate', '../../{{ image }}');"><img src="{{ project.absolute_url }}{{ image }}" /></a></li>
+                    <li><a href="#" onclick="tinyMCE.execInstanceCommand('{{editor_id}}', 'mlImageCreate', '../../{{ image.large }}');"><img src="{{ project.absolute_url }}{{ image.thumb }}" /></a></li>
                 {% endfor %}
                 </ul>
                 {% else %}
