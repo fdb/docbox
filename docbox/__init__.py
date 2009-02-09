@@ -8,7 +8,7 @@ from django.template.loader import get_template
 def _handle_file(src_file, dst_file):
     print "Building %s" % src_file
     contents = open(src_file).read()
-    wrapped_contents = '{%% extends "base.html" %%}\n{%% load docbox %%}\n{%% block content %%}\n%s\n{%% endblock %%}' % contents
+    wrapped_contents = '{%% extends "base.html" %%}\n{%% load editortags %%}\n{%% block content %%}\n%s\n{%% endblock %%}' % contents
     template = Template(wrapped_contents)
     context = Context({'MEDIA_URL':settings.MEDIA_URL})
     html = template.render(context)

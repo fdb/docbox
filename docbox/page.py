@@ -73,7 +73,7 @@ class Page(object):
         """Render the contents of the page."""
         # Prefix html with internal loads
         html = re.sub(meta_re, '', self.html)
-        html = '''{%% load docbox %%}%s''' % html
+        html = '''{%% load editortags %%}%s''' % html
 
         t = Template(html)
         if request is None:

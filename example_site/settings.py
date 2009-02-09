@@ -45,6 +45,7 @@ TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, 'templates'),)
 # Include docbox in the list of installed applications.
 INSTALLED_APPS = (
     'docbox',
+    'docbox.mnml',
     'docboxdata.data',
     'django.contrib.auth',
     'django.contrib.contenttypes',
