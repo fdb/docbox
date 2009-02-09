@@ -165,6 +165,9 @@
 	text-align: left;
 }
 
+#_ml_tab_content a { text-decoration: none; color: #666; }
+#_ml_tab_content a:hover {	color: #333; }
+
 #_ml_tab_content a img { border: 0;}
 
 #_ml_content_url {
@@ -248,7 +251,27 @@ td ._ml_img_delete {
 	height: 240px;
 }
 
+#lbLightbox{
+	background-color:#eee;
+	padding: 10px;
+	border-bottom: 2px solid #666;
+	border-right: 2px solid #666;
+	}
+	
+.lbCloseButton{ position:absolute; top: 0; right:0; }
+.lbCloseButton img { border: none; }
 
+#lbLightbox img{ border: none; clear: both;} 
+#lbOverlay img{ border: none; }
+
+#lbOverlay { background-image: url(/media/images/overlay.png); }
+
+* html #lbOverlay{
+	background-color: #333;
+	back\ground-color: transparent;
+	background-image: url(blank.gif);
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/media/images/overlay.png", sizingMethod="scale");
+	}
 
 
 #lbLightbox{

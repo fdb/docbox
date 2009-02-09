@@ -61,8 +61,7 @@ def upload(request, project_id):
             elif content_type == "img":
                 _upload_image(mob_path, clean_fname, raw_contents)
             elif content_type == "aud":
-                pass
-            #     _upload_audio(link_type, link_id, mob_path, clean_fname, raw_contents)
+                _upload_audio(mob_path, clean_fname, raw_contents)
             elif content_type == "doc":
                 _upload_document(mob_path, clean_fname, raw_contents)
             else:
@@ -106,6 +105,12 @@ def _upload_image(mob_path, clean_fname, raw_contents):
     img = Image.open(sio)
     image_util.universal_resize(img, 550, 550).save(dest_fname)
     image_util.universal_resize(img, 100, 100).save(thumb_fname)
+
+def _upload_audio(mob_path, clean_fname, raw_contents):
+    dest_fname = os.path.join(mob_path, clean_fname)
+    file = open(dest_fname, 'wb')
+    file.write(raw_contents)
+    file.close()
 
 def _upload_document(mob_path, clean_fname, raw_contents):
     dest_fname = os.path.join(mob_path, clean_fname)

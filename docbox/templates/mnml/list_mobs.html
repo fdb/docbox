@@ -26,11 +26,13 @@
 	    <div id="_ml_content_audio" class="_ml_tab_content" style="display:none">
             <div class="_ml_mobs">
                 {% if audio %}
-                <ul>
+                <table>
                 {% for audio_file in audio %}
-                    <li>{{ audio_file }}</li>
+                    <tr>
+                        <td><a href="#" onclick="tinyMCE.execInstanceCommand('{{ editor_id }}', 'mlAudioCreate', '{{ audio_file.get_url }}');">{% embed_thumb audio_file %}</a></td>
+                    </tr>
                 {% endfor %}
-                </ul>
+                </table>
                 {% else %}
                 <div class="_ml_no_mobs">No audio files found.</div>
                 {% endif %}

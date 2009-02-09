@@ -219,3 +219,4 @@ body.source textarea { padding: 5px; }
 div.topic { width: 80px; }
 div.example { margin-top: 20px; }
 
+.audio_file { background: black url(/media/images/aud_preview.gif) no-repeat top left; width: 150px; height: 20px; }

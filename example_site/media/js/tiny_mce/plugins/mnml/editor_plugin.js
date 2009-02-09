@@ -69,6 +69,13 @@
 				return true;
 			});
 
+			ed.addCommand('mlAudioCreate', function(value) {
+				var doc_html = '<img class="audio_file" src="/media/images/blank.gif" title="' + value + '" />\n';
+				ed.execCommand('inserthtml', false, doc_html);
+				ed.execCommand('mlImageCancel');
+				return true;
+			});
+			
 			// Register mnml button
 			ed.addButton('mnml', {
 				title : 'mnml.desc',
