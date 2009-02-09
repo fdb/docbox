@@ -22,21 +22,13 @@ class CodeNode(template.Node):
     def render(self, context):
         from PyFontify import fontify
         output = unicode(self.nodelist.render(context))
-        l = []
-        s = 0
-        for tag, start, end, li in fontify(output):
-            if s < start:
-                l.append(("", s, start))
-            l.append((tag, start, end))
-            s = end
-        txt = ""
-        for (tag, start, end) in l:
-            if tag == "":
-                txt += output[start:end]
-            else:
-                txt += '<span class="%s">%s</span>' % (tag, output[start:end])
-        txt = '<div class="examplecode">%s</div>' % txt
-        return txt
+        tags = fontify(output)
+        html = output
+        d = 0
+        for tag, start, end, sublist in tags:
+            html = html[:start+d] + """<span class="%s">%s</span>""" % (tag, html[start+d:end+d]) + html[end+d:]
+            d += len(tag) + 22 # 22 is the length of the span HTML code
+        return html
 
 if __name__=='__main__':
     print "main"
