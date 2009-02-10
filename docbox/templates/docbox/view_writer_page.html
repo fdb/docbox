@@ -60,11 +60,17 @@
         	</span>
         	<div style="display:none;" id="commit">
         	<div style="margin:10px 0 0 0;">
-        		<ul>
+        		<table>
         		    {% for change in changes %}
-        			<li><a href="/writer/project/{{project.identifier}}/page/{{ change }}/">{{project.identifier}}/{{ change }}</a></li>
+        		    <tr>
+        		    {% if change.isHTML %}
+        			<td>{{ change.text_status }}</td><td><a href="/writer/project/{{project.identifier}}/page/{{ change.basename }}/">{{ change.basename }}</td></li>
+        			{% else %}
+        			<td>{{ change.text_status }}</td><td><a href="/project/{{project.identifier}}/{{ change.filename }}">{{ change.filename }}</a></td>
+        			{% endif %}
+        			</tr>
         			{% endfor %}
-        		</ul>
+        		</table>
         	</div>
         	<div style="margin:10px 0 0 0;"><textarea style="width:719px;height:100px;" name="commitString"></textarea></div>
         	<div>

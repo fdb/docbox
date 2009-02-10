@@ -22,10 +22,35 @@ def addFile(path):
 
 ALLOWED_EXTENSIONS = [".html", ".gif", ".jpg", ".png", ".avi", ".mov", ".mp3", ".pdf", ".doc", ".xls"]
 
+class StatusObject(object):
+    def __init__(self, project, status_object):
+        self.project = project
+        self.status_object = status_object
+
+    def _get_text_status(self):
+        return str(self.status_object.text_status)
+    text_status = property(_get_text_status)
+        
+    def _get_extension(self):
+        base, ext = os.path.splitext(os.path.basename(self.status_object.path))
+        return ext.lower()
+    extension = property(_get_extension)
+        
+    def _get_basename(self):
+        base, ext = os.path.splitext(os.path.basename(self.status_object.path))
+        return base
+    basename = property(_get_basename)
+
+    def _get_filename(self):
+        return os.path.basename(self.status_object.path)
+    filename = property(_get_filename)
+
+    def isHTML(self):
+        return self.extension == '.html'
+        
 def docChanges(project):
     client = pysvn.Client()
-    changes = [c.path for c in client.status(project.file_path) if c.text_status != pysvn.wc_status_kind.normal]
-    # this is hacky
-    changes = [os.path.splitext(os.path.basename(c))[0] for c in changes if os.path.splitext(os.path.basename(c))[1] in ALLOWED_EXTENSIONS]
+    changes = [StatusObject(project, c) for c in client.status(project.file_path)]
+    changes = [c for c in changes if c.text_status != "normal" and c.extension in ALLOWED_EXTENSIONS]
     return changes
     
