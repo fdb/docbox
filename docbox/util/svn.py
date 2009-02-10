@@ -19,13 +19,13 @@ def checkout(project):
 def addFile(path):
     client = pysvn.Client()
     client.add(path)
-    
+
+ALLOWED_EXTENSIONS = [".html", ".gif", ".jpg", ".png", ".avi", ".mov", ".mp3", ".pdf", ".doc", ".xls"]
+
 def docChanges(project):
     client = pysvn.Client()
-
-    changes = [c.path for c in client.status(project.file_path)]
     changes = [c.path for c in client.status(project.file_path) if c.text_status != pysvn.wc_status_kind.normal]
     # this is hacky
-    changes = [os.path.splitext(os.path.basename(c))[0] for c in changes if os.path.splitext(os.path.basename(c))[1] == '.html']
+    changes = [os.path.splitext(os.path.basename(c))[0] for c in changes if os.path.splitext(os.path.basename(c))[1] in ALLOWED_EXTENSIONS]
     return changes
     

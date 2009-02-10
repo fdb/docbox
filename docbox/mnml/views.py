@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from docboxdata.data.models import Project
 from docbox.util import image as image_util
 from docbox.util.filename import clean_filename
+from docbox.util import svn
 from docbox.mnml import Mob
 
 FILE_TYPE_MAPPINGS = {
@@ -64,7 +65,6 @@ def upload(request, project_id):
                 # _log("unknown filetype", ext, clean_fname)
                 # todo: make sure this gets mentioned to the user
                 return HttpResponse("Unknown filetype %s" % ext, status=400)
-
 #            _log("upload_done", link_type, link_id, clean_fname)
             return render_to_response('mnml/upload_done.html', 
                 {'project_id': project_id, 'editor_id': editor_id }, 
@@ -101,8 +101,14 @@ def _upload_image(mob_path, clean_fname, raw_contents):
     image_util.universal_resize(img, 550, 550).save(dest_fname)
     image_util.universal_resize(img, 100, 100).save(thumb_fname)
 
+    svn.addFile(dest_fname)
+    svn.addFile(thumb_fname)
+
 def _upload_mob(mob_path, clean_fname, raw_contents):
     dest_fname = os.path.join(mob_path, clean_fname)
+
     file = open(dest_fname, 'wb')
     file.write(raw_contents)
     file.close()
+
+    svn.addFile(dest_fname)
