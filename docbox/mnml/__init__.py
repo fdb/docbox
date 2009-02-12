@@ -1,4 +1,5 @@
 import os
+from docbox.util import quicktime as quicktime_util
 
 class Mob(object):
     """Mobs are Media OBjects linked to various types of objects."""
@@ -6,8 +7,14 @@ class Mob(object):
         self.project = project
         self.file_name = file_name
         self.type = type
-        self.width = 320
-        self.height = 240
+        
+        if self.type == 'mov':
+            self.width, self.height = quicktime_util.file_size_for_movie(os.path.join(self.project.file_path, self.file_name))
+
+            if self.width == 0 or self.height == 0: # something probably went wrong in the encoding of the media object
+                self.width, self.height = 320, 240
+        else:
+            self.width = self.height = 0
     
     def get_url(self):
         return "/project/%s/%s" % (self.project.identifier, self.file_name)
