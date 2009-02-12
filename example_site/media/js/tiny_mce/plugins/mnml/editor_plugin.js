@@ -86,7 +86,7 @@
 					var height = 395;
 					var full_url = movie_url;
 					var html = ''
-						+ '<img class="movie_embedded" src="/media/img/blank.gif" title="' + full_url + '" '
+						+ '<img class="movie_embedded" src="/media/images/blank.gif" title="' + full_url + '" '
 						+ 'width="' + width + '" height="' + height + '" />\n';
 					ed.execCommand('inserthtml', false, html);
     				ed.execCommand('mlImageCancel');
