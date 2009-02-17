@@ -1,5 +1,6 @@
-from django.db import models
 import os
+from django.db import models
+from docbox.util import svn as svnutil
 
 try:
     from settings import DOCBOX_DOC_ROOT
@@ -72,6 +73,49 @@ class Project(models.Model):
         
     def usesSvn(self):
         return self.vcs == 'svn'
+
+    def checkout(self):
+        if self.vcs == 'svn':
+            svnutil.checkout(self)
+        elif self.vcs == 'git': 
+            pass # todo: implement
+        else:
+            try:
+                os.mkdir(self.file_path)
+            except: # todo: implement
+                print "error: '%s' not created." % self.file_path
+
+    def add(self, page_name):
+        if self.vcs == 'svn':
+            svnutil.addFile(self.page_path(page_name))
+        elif self.vcs == 'git': 
+            pass # todo: implement
+        else:
+            pass # todo: implement
+
+    def commit(self, commitString):
+        if self.vcs == 'svn':
+            svnutil.apply_commit(self.file_path, commitString)
+        elif self.vcs == 'git': 
+            pass # todo: implement
+        else:
+            pass # todo: implement
+
+    def revert(self):
+        if self.vcs == 'svn':
+            svnutil.apply_revert(self.file_path)
+        elif self.vcs == 'git': 
+            pass # todo: implement
+        else:
+            pass # todo: implement
+
+    def docChanges(self):
+        if self.vcs == 'svn':
+            return svnutil.docChanges(self)
+        elif self.vcs == 'git': 
+            return [] # todo: implement
+        else:
+            return [] # todo: implement
 
     def __unicode__(self):
         if self.name:

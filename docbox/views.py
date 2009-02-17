@@ -13,7 +13,6 @@ from django.forms import ModelForm
 from page import Page, url_to_filename
 from docboxdata.data.models import Project
 from util.fileio import read_from_file, write_to_file
-from util import svn as svnutil
 
 def format_string(title):
     return title.lower().replace(' ', '_')
@@ -65,39 +64,22 @@ def view_writer_project(request, project_id):
             new_project = form.save(commit=False)
             new_project.identifier = format_string(new_project.identifier)
             new_project.save()
-            if new_project.usesSvn():
-                svnutil.checkout(new_project)
-            elif new_project.usesGit(): 
-                pass # todo: implement
-            else:
-                try:
-                    os.mkdir(new_project.file_path)
-                except: # todo: implement
-                    print "error: '%s' not created." % new_project.file_path
-                    
+            new_project.checkout()
             return HttpResponseRedirect("/writer/project/" + new_project.identifier + '/')
 
     return render_to_response('docbox/view_writer_project.html', 
         {'form': form, 'projects': projects, 'project': project }, 
         context_instance=RequestContext(request))
 
-def handle_commit(post, project):
-    filepath = project.file_path
+def handle_commit_or_revert(post, project):
+    success = False
     if post.has_key("commit"):
-        commitString = post.get("commitString", "")
-        if project.usesSvn():
-            svnutil.apply_commit(filepath, commitString)
-        else:
-            pass # todo: implement
-        return HttpResponseRedirect(project.absolute_url)
+        project.commit(post.get("commitString", ""))
+        success = True
     elif post.has_key("revert"):
-        if project.usesSvn():
-            svnutil.apply_revert(filepath)
-        else:
-            pass # todo: implement
-        return HttpResponseRedirect(project.absolute_url)
-    else:
-        return None
+        project.revert()
+        success = True
+    return success and HttpResponseRedirect(project.absolute_url) or None
 
 @login_required
 def view_writer_page(request, project_id, page):
@@ -120,9 +102,9 @@ def view_writer_page(request, project_id, page):
 
     if request.META["REQUEST_METHOD"] == "POST":
         post = request.POST
-        commit = handle_commit(post, project)
-        if commit is not None:
-            return commit
+        commit_or_revert = handle_commit_or_revert(post, project)
+        if commit_or_revert is not None:
+            return commit_or_revert
 
         page_name = is_new and post.get("page-name", "") or page
         documentation = post.get("doc-content", "")
@@ -132,15 +114,10 @@ def view_writer_page(request, project_id, page):
             filepath = project.page_path(page_name)
             write_to_file(filepath, documentation)
             if is_new:
-                if project.usesSvn():
-                    svnutil.addFile(filepath)
-                else:
-                    pass # todo: implement
+                project.add(page_name)
             return HttpResponseRedirect("/writer/project/" + project.identifier + '/page/' + page_name + '/')
-    if project.usesSvn():
-        changes = svnutil.docChanges(project)
-    else:
-        changes = [] # todo: implement
+
+    changes = project.docChanges()
         
     return render_to_response('docbox/view_writer_page.html', 
         {'project': project, 'documentation': documentation, 'page': page, 'changes': changes, 'projects': projects, 'page_name_error': page_name_error }, 
