@@ -1,6 +1,10 @@
 from django.db import models
 import os
-from settings import DOCBOX_DOC_ROOT
+
+try:
+    from settings import DOCBOX_DOC_ROOT
+except:
+    DOCBOX_DOC_ROOT = ''
 
 FILE_TYPE_MAPPINGS = {
     'img': ['.jpg', '.gif', '.png'],
@@ -10,12 +14,17 @@ FILE_TYPE_MAPPINGS = {
 }
 
 class Project(models.Model):
+    VCS_CHOICES = (
+            ('git', 'Git'),
+            ('svn', 'Subversion'),
+        )
     name = models.CharField(max_length=120)
     identifier = models.CharField(max_length=30, unique=True)
     description = models.TextField(blank=True)
     username = models.CharField(max_length=30)
     password = models.CharField(max_length=30)
     homepage = models.URLField(blank=True)
+    vcs = models.CharField(max_length=3, choices=VCS_CHOICES, blank=True)
     doc_url = models.CharField(max_length=200, verbose_name='Documentation URL', blank=True)
     src_url = models.CharField(max_length=200, verbose_name='Source URL', blank=True)
     
@@ -58,6 +67,12 @@ class Project(models.Model):
     def get_documents(self):
         return self.find_project_files_by_ext(FILE_TYPE_MAPPINGS['doc'])
     
+    def isGit(self):
+        return self.vsc == 'git'
+        
+    def isSvn(self):
+        return self.vsc == 'svn'
+
     def __unicode__(self):
         if self.name:
             return self.name
