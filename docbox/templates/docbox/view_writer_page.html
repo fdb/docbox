@@ -76,7 +76,7 @@
         <p><a id="link_result" href="/{{ project.identifier }}/{{ page }}/">View result</a></p>
         {% else %}
         <h2>{{ project.identifier }}: Create a new page</h2>
-        <label for="page_name">Title:</label><input type="input" id="page_name" name="page-name" maxlength="200" value="{{ page }}" />
+        <label for="page_name">Title:</label><input type="input" id="page_name" name="page-name" maxlength="200" value="{{ page }}" /> {% if page_name_error %}<span id="page_name_error">{{ page_name_error }}</span>{% endif %}
         {% endif %}
         <textarea id="docarea" name="doc-content" class="mceEditor" style="width:742px;height: 350px;">
             {{ documentation|safe }}

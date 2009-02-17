@@ -40,3 +40,4 @@ a#link_result:hover, a#logout:hover { background: inherit; text-decoration: unde
 #header h1, div#changes, #pages, #projectlist { background:#b6af9f; }
 div#changes, #pages, #projectlist { border: 1px solid #bbb; }
 
+span#page_name_error { color: red;}
