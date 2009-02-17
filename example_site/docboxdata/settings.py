@@ -10,11 +10,6 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASE_USER = 'root'
-
-DATABASE_ENGINE = 'mysql'
-DATABASE_NAME = 'docboxdata'
-
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -45,9 +40,6 @@ MEDIA_URL = ''
 # trailing slash.
 # Examples: "http://foo.com/media/", "/media/".
 ADMIN_MEDIA_PREFIX = '/media/'
-
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = 'vn^2-#27*=o)*19bj64h92no0sqxv*gf(#d4&@=&8h=82zrns('
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -81,3 +73,14 @@ INSTALLED_APPS = (
 )
 
 DMIGRATIONS_DIR = os.path.join(os.path.dirname(__file__), 'migrations')
+
+def dependency_error(string):
+    sys.stderr.write('%s\n' % string)
+    sys.exit(1)
+
+# Load local settings.  This can override anything in here, but at the very
+# least it needs to define database connectivity.
+try:
+    from settings_local import *
+except ImportError:
+    dependency_error('Unable to read settings_local.py.')
