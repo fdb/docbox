@@ -89,6 +89,8 @@ def view_writer_page(request, project_id, page):
     is_new = page is None or page == ""
     project = get_object_or_404(Project, identifier=project_id)
 
+    projects = Project.objects.all()
+
     if not is_new:
         if page.startswith("/"):
             title = page = page[1:]
@@ -116,6 +118,6 @@ def view_writer_page(request, project_id, page):
     changes = docChanges(project)
         
     return render_to_response('docbox/view_writer_page.html', 
-        {'project': project, 'documentation': documentation, 'page': page, 'changes': changes }, 
+        {'project': project, 'documentation': documentation, 'page': page, 'changes': changes, 'projects': projects }, 
         context_instance=RequestContext(request))
 
