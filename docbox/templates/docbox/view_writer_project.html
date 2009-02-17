@@ -35,8 +35,40 @@
 </td>
 <td>
 <div id="project">
-    <h2>{% if project %}{{ project.identifier }}{% else %}Create a new project{% endif %}</2>
     <form method="post" action="." class="project-form">
+
+    {% if changes %}
+    <div id="changes">
+    	Branch: <select><option>master</option><option>v1.0</option></select>
+    	<span style="float:right;">
+    	<strong><a href="#" onclick="document.getElementById('commit').style.display='block';">{{ changes|length }} documentation changes</a></strong>
+    	</span>
+    	<div style="display:none;" id="commit">
+    	<div style="margin:10px 0 0 0;">
+    		<table>
+    		    {% for change in changes %}
+    		    <tr>
+    		    {% if change.isHTML %}
+    			<td>{{ change.text_status }}</td><td><a href="/writer/project/{{project.identifier}}/page/{{ change.basename }}/">{{ change.basename }}</td></li>
+    			{% else %}
+    			<td>{{ change.text_status }}</td><td><a href="/project/{{project.identifier}}/{{ change.filename }}">{{ change.filename }}</a></td>
+    			{% endif %}
+    			</tr>
+    			{% endfor %}
+    		</table>
+    	</div>
+    	<div style="margin:10px 0 0 0;"><textarea style="width:719px;height:100px;" name="commitString"></textarea></div>
+    	<div>
+    	<span style="float:right">
+    	<input type="submit" name="revert" value="Cancel" />
+    	<input type="submit" name="commit" value="Commit" />
+    	</span>
+    	</div>
+    	<br style="clear:both;">
+    	</div>
+    </div>{% endif %}
+        
+    <h2>{% if project %}{{ project.identifier }}{% else %}Create a new project{% endif %}</2>
         <ul>
             {{form.as_ul}}
         </ul>
