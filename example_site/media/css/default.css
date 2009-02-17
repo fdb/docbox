@@ -1,3 +1,6 @@
+﻿/***************************************/
+/* TYPOGRAPHY */
+
 /* Typography */
 body, table, td, input, select, option, textarea { font: 12px Georgia; line-height: 1.4em; }
 h1, h3, #navigation, #navigation a { font: bold 18px Arial; letter-spacing: -1px; }
@@ -218,7 +221,3 @@ body.source textarea { padding: 5px; }
 /* SPECIFIC PAGES */
 div.topic { width: 80px; }
 div.example { margin-top: 20px; }
-
-.movie_file { background: black url(/media/images/mov_preview.gif) no-repeat 50% 50%; }
-.movie_embedded { background: black url(/media/images/mov_embed_preview.gif) no-repeat 50% 50%; }
-.audio_file { background: black url(/media/images/aud_preview.gif) no-repeat top left; width: 150px; height: 20px; }
