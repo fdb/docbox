@@ -58,6 +58,10 @@ def view_writer_project(request, project_id):
 
     if request.META["REQUEST_METHOD"] == "POST":
         post = request.POST
+
+        if handle_commit_or_revert(post, project):
+            return HttpResponseRedirect(request.META["PATH_INFO"])
+
         form = ProjectForm(post, instance=project)
 
         if form.is_valid():
@@ -67,19 +71,20 @@ def view_writer_project(request, project_id):
             new_project.checkout()
             return HttpResponseRedirect("/writer/project/" + new_project.identifier + '/')
 
+    changes = project is not None and project.docChanges() or []
+
     return render_to_response('docbox/view_writer_project.html', 
-        {'form': form, 'projects': projects, 'project': project }, 
+        {'form': form, 'projects': projects, 'project': project, 'changes': changes }, 
         context_instance=RequestContext(request))
 
 def handle_commit_or_revert(post, project):
-    success = False
     if post.has_key("commit"):
         project.commit(post.get("commitString", ""))
-        success = True
+        return True
     elif post.has_key("revert"):
         project.revert()
-        success = True
-    return success and HttpResponseRedirect(project.absolute_url) or None
+        return True
+    return False
 
 @login_required
 def view_writer_page(request, project_id, page):
@@ -102,9 +107,9 @@ def view_writer_page(request, project_id, page):
 
     if request.META["REQUEST_METHOD"] == "POST":
         post = request.POST
-        commit_or_revert = handle_commit_or_revert(post, project)
-        if commit_or_revert is not None:
-            return commit_or_revert
+
+        if handle_commit_or_revert(post, project):
+            return HttpResponseRedirect(request.META["PATH_INFO"])
 
         page_name = is_new and post.get("page-name", "") or page
         documentation = post.get("doc-content", "")
