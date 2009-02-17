@@ -51,6 +51,6 @@ class StatusObject(object):
 def docChanges(project):
     client = pysvn.Client()
     changes = [StatusObject(project, c) for c in client.status(project.file_path)]
-    changes = [c for c in changes if c.text_status != "normal" and c.extension in ALLOWED_EXTENSIONS]
+    changes = [c for c in changes if c.text_status not in ["normal", "unversioned"] and c.extension in ALLOWED_EXTENSIONS]
     return changes
     
