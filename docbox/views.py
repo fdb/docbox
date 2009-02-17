@@ -69,7 +69,7 @@ def view_writer_project(request, project_id):
             new_project.identifier = format_string(new_project.identifier)
             new_project.save()
             new_project.checkout()
-            return HttpResponseRedirect("/writer/project/" + new_project.identifier + '/')
+            return HttpResponseRedirect("/%s/edit/" % new_project.identifier)
 
     changes = project is not None and project.docChanges() or []
 
@@ -97,8 +97,8 @@ def view_writer_page(request, project_id, page):
     
     if not is_new:
         if page.startswith("/"):
-            title = page = page[1:]
-        f = project.page_path(title)
+            page = page[1:]
+        f = project.page_path(page)
         if not os.path.exists(f):
             raise Http404
         documentation = read_from_file(f)
@@ -120,7 +120,7 @@ def view_writer_page(request, project_id, page):
             write_to_file(filepath, documentation)
             if is_new:
                 project.add(page_name)
-            return HttpResponseRedirect("/writer/project/" + project.identifier + '/page/' + page_name + '/')
+            return HttpResponseRedirect("/%s/%s/edit/" % (project.identifier, page_name))
 
     changes = project.docChanges()
         

@@ -13,13 +13,13 @@
     <tr>
         <td class="projects-nav" valign="top">
 <div id="pages">
-<h2>Project: <a href="/writer/project/{{ project.identifier }}/">{{ project.identifier }}</a></h2>
+<h2>Project: <a href="/{{ project.identifier }}/edit/">{{ project.identifier }}</a></h2>
 <ul>
     {% if page %}
-    <li class="newpage"><a href="/writer/project/{{ project.identifier }}/page/">new page</a></li>
+    <li class="newpage"><a href="/{{ project.identifier }}/add/">new page</a></li>
     {% endif %}
 {% for page in project.pages %}
-    <li><a href="/writer/project/{{ project.identifier }}/page/{{ page }}">{{ page }}</a></li>
+    <li><a href="/{{ project.identifier }}/{{ page }}/edit/">{{ page }}</a></li>
 {% endfor %}
 </ul>
 </div>
@@ -28,9 +28,9 @@
 <div id="projectlist">
     <h2>Projects</h2>
     <ul>
-        <li class="newproject"><a href="/writer/project/">new project</a></li>
+        <li class="newproject"><a href="/project/add/">new project</a></li>
 {% for project in projects %}
-        <li><a href="/writer/project/{{ project.identifier }}/">{{ project.identifier }}</a></li>
+        <li><a href="/{{ project.identifier }}/edit/">{{ project.identifier }}</a></li>
 {% endfor %}
     </ul>
 </div>
@@ -52,7 +52,7 @@
         		    {% for change in changes %}
         		    <tr>
         		    {% if change.isHTML %}
-        			<td>{{ change.text_status }}</td><td><a href="/writer/project/{{project.identifier}}/page/{{ change.basename }}/">{{ change.basename }}</td></li>
+        			<td>{{ change.text_status }}</td><td><a href="/{{project.identifier}}/{{ change.basename }}/edit/">{{ change.basename }}</td></li>
         			{% else %}
         			<td>{{ change.text_status }}</td><td><a href="/project/{{project.identifier}}/{{ change.filename }}">{{ change.filename }}</a></td>
         			{% endif %}

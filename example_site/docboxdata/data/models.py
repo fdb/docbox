@@ -34,7 +34,7 @@ class Project(models.Model):
     file_path = property(_get_file_path)
     
     def _get_absolute_url(self):
-        return "/writer/project/%s/" % self.identifier
+        return "/%s/edit/" % self.identifier
     absolute_url = property(_get_absolute_url)
     
     def page_path(self, page):
