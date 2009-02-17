@@ -54,8 +54,6 @@ INSTALLED_APPS = (
     'django.contrib.admin',
 )
 
-DMIGRATIONS_DIR = os.path.join(os.path.dirname(__file__), 'migrations')
-
 LOGIN_URL = '/login/'
 
 def dependency_error(string):
