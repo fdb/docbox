@@ -28,7 +28,7 @@ class CodeNode(template.Node):
         for tag, start, end, sublist in tags:
             html = html[:start+d] + """<span class="%s">%s</span>""" % (tag, html[start+d:end+d]) + html[end+d:]
             d += len(tag) + 22 # 22 is the length of the span HTML code
-        return html
+        return """<div class="python">""" + html + "</div>"
 
 if __name__=='__main__':
     print "main"
