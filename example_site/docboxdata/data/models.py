@@ -67,11 +67,11 @@ class Project(models.Model):
     def get_documents(self):
         return self.find_project_files_by_ext(FILE_TYPE_MAPPINGS['doc'])
     
-    def isGit(self):
-        return self.vsc == 'git'
+    def usesGit(self):
+        return self.vcs == 'git'
         
-    def isSvn(self):
-        return self.vsc == 'svn'
+    def usesSvn(self):
+        return self.vcs == 'svn'
 
     def __unicode__(self):
         if self.name:

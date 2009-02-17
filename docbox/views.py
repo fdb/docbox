@@ -13,7 +13,7 @@ from django.forms import ModelForm
 from page import Page, url_to_filename
 from docboxdata.data.models import Project
 from util.fileio import read_from_file, write_to_file
-from util.svn import *
+from util import svn as svnutil
 
 def format_string(title):
     return title.lower().replace(' ', '_')
@@ -65,7 +65,16 @@ def view_writer_project(request, project_id):
             new_project = form.save(commit=False)
             new_project.identifier = format_string(new_project.identifier)
             new_project.save()
-            checkout(new_project)
+            if new_project.usesSvn():
+                svnutil.checkout(new_project)
+            elif new_project.usesGit(): 
+                pass # todo: implement
+            else:
+                try:
+                    os.mkdir(new_project.file_path)
+                except: # todo: implement
+                    print "error: '%s' not created." % new_project.file_path
+                    
             return HttpResponseRedirect("/writer/project/" + new_project.identifier + '/')
 
     return render_to_response('docbox/view_writer_project.html', 
@@ -76,10 +85,16 @@ def handle_commit(post, project):
     filepath = project.file_path
     if post.has_key("commit"):
         commitString = post.get("commitString", "")
-        apply_commit(filepath, commitString)
+        if project.usesSvn():
+            svnutil.apply_commit(filepath, commitString)
+        else:
+            pass # todo: implement
         return HttpResponseRedirect(project.absolute_url)
     elif post.has_key("revert"):
-        apply_revert(filepath)
+        if project.usesSvn():
+            svnutil.apply_revert(filepath)
+        else:
+            pass # todo: implement
         return HttpResponseRedirect(project.absolute_url)
     else:
         return None
@@ -91,6 +106,8 @@ def view_writer_page(request, project_id, page):
 
     projects = Project.objects.all()
 
+    page_name_error = None
+    
     if not is_new:
         if page.startswith("/"):
             title = page = page[1:]
@@ -107,17 +124,25 @@ def view_writer_page(request, project_id, page):
         if commit is not None:
             return commit
 
-        title = is_new and post.get("page-name", "") or page
-        if title == "":
-            raise
+        page_name = is_new and post.get("page-name", "") or page
         documentation = post.get("doc-content", "")
-        filepath = project.page_path(title)
-        write_to_file(filepath, documentation)
-        if is_new:
-            addFile(filepath)
-    changes = docChanges(project)
+        if page_name == "":
+            page_name_error = "Page name can't be empty"
+        else:
+            filepath = project.page_path(page_name)
+            write_to_file(filepath, documentation)
+            if is_new:
+                if project.usesSvn():
+                    svnutil.addFile(filepath)
+                else:
+                    pass # todo: implement
+            return HttpResponseRedirect("/writer/project/" + project.identifier + '/page/' + page_name + '/')
+    if project.usesSvn():
+        changes = svnutil.docChanges(project)
+    else:
+        changes = [] # todo: implement
         
     return render_to_response('docbox/view_writer_page.html', 
-        {'project': project, 'documentation': documentation, 'page': page, 'changes': changes, 'projects': projects }, 
+        {'project': project, 'documentation': documentation, 'page': page, 'changes': changes, 'projects': projects, 'page_name_error': page_name_error }, 
         context_instance=RequestContext(request))
 
