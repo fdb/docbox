@@ -1,5 +1,5 @@
-{% extends "base.html" %}
-{% block extrahead %}
+{% extends "view.html" %}
+{% block js %}
 	<script type="text/javascript" src="{{MEDIA_URL}}/js/loadmedia.js"></script>
 	<script type="text/javascript">
 	    window.onload = function() {
@@ -8,7 +8,6 @@
 	</script>
 {% endblock %}
 {% block title %}{% if page.title %}{{ page.title }}{% else %}{{ block.super }}{% endif %}{% endblock %}
-
 {% block content %}
 {% if page.title %}
 <h1>{{ page.title }}</h1>

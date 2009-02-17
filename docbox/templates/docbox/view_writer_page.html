@@ -1,8 +1,6 @@
-{% extends "base.html" %}
+{% extends "writer.html" %}
 {% block title %}Write some docu{% endblock%}
-{% block extrahead %}
-<link type="text/css" rel="stylesheet" media="all" href="{{ MEDIA_URL }}/css/ml.css" />
-
+{% block js %}
 <script>var MEDIA_URL = "{{ MEDIA_URL }}";</script>
 <script src="/media/js/tiny_mce/tiny_mce.js"></script>
 <script src="/media/js/prototype.js"></script>
@@ -10,52 +8,42 @@
 <script src="/media/js/load_tinymce.js"></script>
 {% endblock %}
 {% block content %}
-<a href="/logout/" style="float:right;color:green;">Log out</a>
 
-{% if docstates %}
-<form method='POST' action='.'>
-<div style="background:#ddddf3;padding: 10px 10px; margin: 0 0 10px 0; width:724px;">
-	Branch: <select><option>master</option><option>v1.0</option></select>
-	<span style="float:right">
-	<strong><a href="#" onclick="document.getElementById('commit').style.display='block';">{{ docstates|length }} documentation changes</a></strong>
-	</span>
-	<div style="display:none;" id="commit">
-	<div style="margin:10px 0 0 0;">
-		<ul>
-		    {% for docstatus in docstates %}
-			<li><a href="/writer/{{ docstatus.project.identifier }}/">{{ docstatus.project.identifier }}</a></li>
-			{% endfor %}
-		</ul>
-	</div>
-	<div style="margin:10px 0 0 0;"><textarea style="width:719px;height:100px;" name="commitString"></textarea></div>
-	<div>
-	<span style="float:right">
-	<input type="submit" name="cancelCommit" value="Cancel" />
-	<input type="submit" name="commit" value="Commit" />
-	</span>
-	</div>
-	<br style="clear:both;">
-	</div>
-</div>
-</form>
-{% endif %}
-
+<table>
+    <tr>
+        <td class="projects-nav" valign="top">
 <div id="pages">
 <h2>Project: <a href="/writer/project/{{ project.identifier }}/">{{ project.identifier }}</a></h2>
 <ul>
+    {% if page %}
+    <li class="newpage"><a href="/writer/project/{{ project.identifier }}/page/">new page</a></li>
+    {% endif %}
 {% for page in project.pages %}
-    <li><a href="/writer/project/{{ project.identifier }}/page/{{ page }}">{{ project.identifier }}/{{ page }}</a></li>
+    <li><a href="/writer/project/{{ project.identifier }}/page/{{ page }}">{{ page }}</a></li>
 {% endfor %}
 </ul>
 </div>
 
+{% if projects %}
+<div id="projectlist">
+    <h2>Projects</h2>
+    <ul>
+        <li class="newproject"><a href="/writer/project/">new project</a></li>
+{% for project in projects %}
+        <li><a href="/writer/project/{{ project.identifier }}/">{{ project.identifier }}</a></li>
+{% endfor %}
+    </ul>
+</div>
+{% endif %}
+</td>
+<td>
 <div id="project">
 <div class="yui-skin-sam"> 
     <form method="post" action=".">
         {% if changes %}
-        <div style="background:#ddddf3;padding: 10px 10px; margin: 0 0 10px 0; width:724px;">
+        <div id="changes">
         	Branch: <select><option>master</option><option>v1.0</option></select>
-        	<span style="float:right">
+        	<span style="float:right;">
         	<strong><a href="#" onclick="document.getElementById('commit').style.display='block';">{{ changes|length }} documentation changes</a></strong>
         	</span>
         	<div style="display:none;" id="commit">
@@ -84,15 +72,20 @@
         </div>{% endif %}
 
         {% if page %}
-        <h2>Page title: {{ page }}</h2>
+        <h2>{{ project.identifier }}: {{ page }}</h2>
+        <p><a id="link_result" href="/{{ project.identifier }}/{{ page }}/">View result</a></p>
         {% else %}
-        <label for="page_name">Page title:</label><input type="input" id="page_name" name="page-name" maxlength="200" value="{{ page }}" />
+        <h2>{{ project.identifier }}: Create a new page</h2>
+        <label for="page_name">Title:</label><input type="input" id="page_name" name="page-name" maxlength="200" value="{{ page }}" />
         {% endif %}
-        <textarea id="docarea" name="doc-content" class="mceEditor" style="width: 742px; height: 350px;">
+        <textarea id="docarea" name="doc-content" class="mceEditor" style="width:742px;height: 350px;">
             {{ documentation|safe }}
         </textarea>
         <input type="submit" value="Send" />
     </form>
 </div>
 </div>
+</td>
+</tr>
+</table>
 {% endblock %}

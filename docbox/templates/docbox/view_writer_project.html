@@ -1,21 +1,39 @@
-{% extends "base.html" %}
+{% extends "writer.html" %}
 {% block title %}Write some docu{% endblock%}
 {% block extrahead %}
 
 {% endblock %}
 {% block content %}
-<a href="/logout/" style="float:right;color:green;">Log out</a>
-<div id="projectlist">
-{% if projects %}
-    <h2>All projects</h2>
-    <ul>
-{% for project in projects %}
-        <li><a href="/writer/project/{{ project.identifier }}/">{{ project.identifier }}</a></li>
-{% endfor %}
-    </ul>
-{% endif %}
-</div>
+<table>
+    <tr>
+        <td class="projects-nav" valign="top">
+            {% if project %}
+            <div id="pages">
+            <h2>Project: <a href="/writer/project/{{ project.identifier }}/">{{ project.identifier }}</a></h2>
+            <ul>
+                <li class="newpage"><a href="/writer/project/{{ project.identifier }}/page/">new page</a></li>
+            {% for page in project.pages %}
+                <li><a href="/writer/project/{{ project.identifier }}/page/{{ page }}">{{ page }}</a></li>
+            {% endfor %}
+            </ul>
+            </div>
+            {% endif %}
 
+            {% if projects %}
+            <div id="projectlist">
+                <h2>Projects</h2>
+                <ul>
+                    {% if project %}
+                    <li class="newproject"><a href="/writer/project/">new project</a></li>
+                    {% endif %}
+            {% for project in projects %}
+                    <li><a href="/writer/project/{{ project.identifier }}/">{{ project.identifier }}</a></li>
+            {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+</td>
+<td>
 <div id="project">
     <h2>{% if project %}{{ project.identifier }}{% else %}Create a new project{% endif %}</2>
     <form method="post" action="." class="project-form">
@@ -25,24 +43,9 @@
         <input type="submit" value="Send" />
     </form>
 </div>
-{% if project %}
-<div id="pages">
-{% if project.pages %}
-<h2>Project pages '{{ project.identifier }}'</h2>
-<ul>
-    <li><a href="/writer/project/{{ project.identifier }}/page/">Create new page</a></li>
-
-{% for page in project.pages %}
-<li class="newpage"><a href="/writer/project/{{ project.identifier }}/page/{{ page }}">{{ page }}</a></li>
-{% endfor %}
-</ul>
-{% else %}
-<ul>
-    <li><a href="/writer/project/{{ project.identifier }}/page/">Create new page</a></li>
-</ul>
-{% endif %}
-</div>
-{% endif %}
+</td>
+</tr>
+</table>
 
 {% endblock %}
 

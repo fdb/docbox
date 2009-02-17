@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block css %}
+    <link type="text/css" rel="stylesheet" media="all" href="{{MEDIA_URL}}/css/base.css" />
+    <link type="text/css" rel="stylesheet" media="all" href="{{MEDIA_URL}}/css/other.css" />
+    <link type="text/css" rel="stylesheet" media="all" href="{{ MEDIA_URL }}/css/ml.css" />
+{% endblock %}
+
+{% block body %}
+<body>
+    <div id="header">
+    	<h1><a href="/" style="color: black;">DocBox Example Site</a></h1>
+        <a href="/logout/" id="logout" style="">Log out</a>
+    </div>
+    <div id="wrap">
+    	<div id="content">
+    		{% block content %}{% endblock %}
+    	</div>
+    </div>
+</body>
+{% endblock %}
