@@ -25,6 +25,8 @@ sys.path.append(DOCBOX_ROOT)
 # You must set this to let DocBox know where your documentation is.
 DOCBOX_DOC_ROOT = os.path.join(DOCBOX_ROOT, 'docs')
 
+DMIGRATIONS_DIR = os.path.join(PROJECT_ROOT, 'migrations')
+
 SECRET_KEY = '<secret>'
 
 TEMPLATE_LOADERS = (
@@ -46,6 +48,7 @@ TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, 'templates'),)
 INSTALLED_APPS = (
     'docbox',
     'docbox.mnml',
+    'dmigrations',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
