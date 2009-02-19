@@ -11,7 +11,7 @@ from django.views.static import serve
 from django.forms import ModelForm
 
 from page import Page, url_to_filename
-from docboxdata.data.models import Project
+from models import Project
 from util.fileio import read_from_file, write_to_file
 
 def format_string(title):

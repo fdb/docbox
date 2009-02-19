@@ -1,5 +1,5 @@
 from django.contrib import admin
-from docboxdata.data.models import Project
+from models import Project
 
 class ProjectAdmin(admin.ModelAdmin):
     pass

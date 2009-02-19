@@ -8,7 +8,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template import Context, Template, RequestContext
 from django.contrib.auth.decorators import login_required
 
-from docboxdata.data.models import Project
+from docbox.models import Project
 from docbox.util import image as image_util
 from docbox.util.filename import clean_filename
 from docbox.util import svn

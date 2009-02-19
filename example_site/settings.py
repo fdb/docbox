@@ -46,7 +46,6 @@ TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, 'templates'),)
 INSTALLED_APPS = (
     'docbox',
     'docbox.mnml',
-    'docboxdata.data',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
