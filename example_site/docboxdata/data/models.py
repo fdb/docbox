@@ -25,7 +25,7 @@ class Project(models.Model):
     username = models.CharField(max_length=30)
     password = models.CharField(max_length=30)
     homepage = models.URLField(blank=True)
-    vcs = models.CharField(max_length=3, choices=VCS_CHOICES, blank=True)
+    vcs = models.CharField(max_length=3, choices=VCS_CHOICES, verbose_name='Version Control', blank=True)
     doc_url = models.CharField(max_length=200, verbose_name='Documentation URL', blank=True)
     src_url = models.CharField(max_length=200, verbose_name='Source URL', blank=True)
     
