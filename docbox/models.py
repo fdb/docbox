@@ -25,7 +25,8 @@ class Project(models.Model):
     username = models.CharField(max_length=30)
     password = models.CharField(max_length=30)
     homepage = models.URLField(blank=True)
-    vcs = models.CharField(max_length=3, choices=VCS_CHOICES, verbose_name='Version Control', blank=True)
+    doc_vcs = models.CharField(max_length=3, choices=VCS_CHOICES, verbose_name='Doc Version Control', blank=True)
+    src_vcs = models.CharField(max_length=3, choices=VCS_CHOICES, verbose_name='Source Version Control', blank=True)
     doc_url = models.CharField(max_length=200, verbose_name='Documentation URL', blank=True)
     src_url = models.CharField(max_length=200, verbose_name='Source URL', blank=True)
     
@@ -68,16 +69,10 @@ class Project(models.Model):
     def get_documents(self):
         return self.find_project_files_by_ext(FILE_TYPE_MAPPINGS['doc'])
     
-    def usesGit(self):
-        return self.vcs == 'git'
-        
-    def usesSvn(self):
-        return self.vcs == 'svn'
-
     def checkout(self):
-        if self.vcs == 'svn':
+        if self.doc_vcs == 'svn':
             svnutil.checkout(self)
-        elif self.vcs == 'git': 
+        elif self.doc_vcs == 'git': 
             pass # todo: implement
         else:
             try:
@@ -86,33 +81,33 @@ class Project(models.Model):
                 print "error: '%s' not created." % self.file_path
 
     def add(self, page_name):
-        if self.vcs == 'svn':
+        if self.doc_vcs == 'svn':
             svnutil.addFile(self.page_path(page_name))
-        elif self.vcs == 'git': 
+        elif self.doc_vcs == 'git': 
             pass # todo: implement
         else:
             pass # todo: implement
 
     def commit(self, commitString):
-        if self.vcs == 'svn':
+        if self.doc_vcs == 'svn':
             svnutil.apply_commit(self.file_path, commitString)
-        elif self.vcs == 'git': 
+        elif self.doc_vcs == 'git': 
             pass # todo: implement
         else:
             pass # todo: implement
 
     def revert(self):
-        if self.vcs == 'svn':
+        if self.doc_vcs == 'svn':
             svnutil.apply_revert(self.file_path)
-        elif self.vcs == 'git': 
+        elif self.doc_vcs == 'git': 
             pass # todo: implement
         else:
             pass # todo: implement
 
     def docChanges(self):
-        if self.vcs == 'svn':
+        if self.doc_vcs == 'svn':
             return svnutil.docChanges(self)
-        elif self.vcs == 'git': 
+        elif self.doc_vcs == 'git': 
             return [] # todo: implement
         else:
             return [] # todo: implement

@@ -20,7 +20,7 @@ def format_string(title):
 class ProjectForm(ModelForm):
     class Meta:
         model = Project
-        fields = ('name', 'identifier', 'description', 'homepage', 'vcs', 'src_url', 'doc_url')
+        fields = ('name', 'identifier', 'description', 'homepage', 'doc_vcs', 'doc_url', 'src_vcs', 'src_url')
 
 def view_index(request):
     return view(request, 'index')
