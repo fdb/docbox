@@ -16,6 +16,7 @@ PROJECT_ROOT = os.path.dirname(__file__)
 sys.path.append(PROJECT_ROOT)
 DOCBOX_ROOT = os.path.dirname(PROJECT_ROOT)
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
+DOCBOX_URL = ''
 MEDIA_URL = '/media'
 ADMIN_MEDIA_PREFIX = '/media/admin/'
 
@@ -40,7 +41,8 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'example_site.urls'
 
-TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, 'templates'),)
+TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, 'templates'),
+                 os.path.join(DOCBOX_ROOT, 'docbox', 'templates', 'docbox'))
 
 # Include docbox in the list of installed applications.
 INSTALLED_APPS = (
