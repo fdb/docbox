@@ -9,29 +9,29 @@
         <td class="projects-nav" valign="top">
             {% if project %}
             <div id="pages">
-            <h2>Project: <a href="/{{ project.identifier }}/edit/">{{ project.identifier }}</a></h2>
+            <h2>Project: <a href="{{ project.absolute_url }}edit/">{{ project.identifier }}</a></h2>
             <ul>
-                <li class="newpage"><a href="/{{ project.identifier }}/add/">new page</a></li>
+                <li class="newpage"><a href="{{ project.absolute_url }}page/add/">new page</a></li>
             {% for page in project.pages %}
-                <li><a href="/{{ project.identifier }}/{{ page }}/edit/">{{ page }}</a></li>
+                <li><a href="{{ page.absolute_url }}edit/">{{ page.name }}</a></li>
             {% endfor %}
             </ul>
             </div>
             {% endif %}
 
-            {% if projects %}
             <div id="projectlist">
                 <h2>Projects</h2>
+                {% if projects %}
                 <ul>
                     {% if project %}
-                    <li class="newproject"><a href="/project/add/">new project</a></li>
+                    <li class="newproject"><a href="{{ DOCBOX_URL }}/project/add/">new project</a></li>
                     {% endif %}
             {% for project in projects %}
-                    <li><a href="/{{ project.identifier }}/edit/">{{ project.identifier }}</a></li>
+                    <li><a href="{{ project.absolute_url }}edit/">{{ project.identifier }}</a></li>
             {% endfor %}
                 </ul>
+                {% endif %}
             </div>
-            {% endif %}
 </td>
 <td>
 <div id="project">
@@ -48,11 +48,7 @@
     		<table>
     		    {% for change in changes %}
     		    <tr>
-    		    {% if change.isHTML %}
-    			<td>{{ change.text_status }}</td><td><a href="/{{project.identifier}}/{{ change.basename }}/edit/">{{ change.basename }}</td></li>
-    			{% else %}
-    			<td>{{ change.text_status }}</td><td><a href="/project/{{project.identifier}}/{{ change.filename }}">{{ change.filename }}</a></td>
-    			{% endif %}
+        			<td>{{ change.text_status }}</td><td><a href="{{ change.view_url }}">{{ change.displayname }}</td></li>
     			</tr>
     			{% endfor %}
     		</table>

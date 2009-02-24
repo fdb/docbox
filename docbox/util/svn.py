@@ -45,6 +45,21 @@ class StatusObject(object):
         return os.path.basename(self.status_object.path)
     filename = property(_get_filename)
 
+    def _get_displayname(self):
+        return self.isHTML() and self.basename or self.filename
+    displayname = property(_get_displayname)
+    
+    def _get_absolute_url(self):
+        return "%s%s/" % (self.project.absolute_url(), self.basename)
+    absolute_url = property(_get_absolute_url)
+    
+    def _get_view_url(self):
+        if self.isHTML():
+            return "%sedit/" % self.absolute_url
+        else:
+            return "%s%s" % (self.project.media_url(), self.filename)
+    view_url = property(_get_view_url)
+    
     def isHTML(self):
         return self.extension == '.html'
         

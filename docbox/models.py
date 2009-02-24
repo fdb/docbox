@@ -3,7 +3,7 @@ from django.db import models
 from docbox.util import svn as svnutil
 
 try:
-    from settings import DOCBOX_DOC_ROOT
+    from settings import DOCBOX_DOC_ROOT, DOCBOX_URL
 except:
     DOCBOX_DOC_ROOT = ''
 
@@ -13,6 +13,14 @@ FILE_TYPE_MAPPINGS = {
     'aud': ['.mp3'],
     'doc': ['.pdf', '.xls', '.doc']
 }
+
+class Page(object):
+    def __init__(self, project, pagename):
+        self.name = pagename
+        self.project = project
+    
+    def absolute_url(self):
+        return "%s/%s/%s/" % (DOCBOX_URL, self.project.identifier, self.name)
 
 class Project(models.Model):
     VCS_CHOICES = (
@@ -34,9 +42,11 @@ class Project(models.Model):
         return os.path.join(DOCBOX_DOC_ROOT, self.identifier)
     file_path = property(_get_file_path)
     
-    def _get_absolute_url(self):
-        return "/%s/edit/" % self.identifier
-    absolute_url = property(_get_absolute_url)
+    def absolute_url(self):
+        return "%s/%s/" % (DOCBOX_URL, self.identifier)
+    
+    def media_url(self):
+        return "%s/project/%s/" % (DOCBOX_URL, self.identifier)
     
     def page_path(self, page):
         return os.path.join(DOCBOX_DOC_ROOT, self.identifier, page + '.html')
@@ -53,7 +63,10 @@ class Project(models.Model):
         return li
 
     def pages(self):
-        return self.find_project_files_by_ext(['.html'], False)
+        return [Page(self, name) for name in self.find_project_files_by_ext(['.html'], False)]
+    
+    def get_page(self, name):
+        return Page(self, name)
         
     def get_images(self):
         images = self.find_project_files_by_ext(FILE_TYPE_MAPPINGS['img'])

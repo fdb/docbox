@@ -1,17 +1,19 @@
-{% extends "view.html" %}
-{% block js %}
-	<script type="text/javascript" src="{{MEDIA_URL}}/js/loadmedia.js"></script>
-	<script type="text/javascript">
-	    window.onload = function() {
-	      load_audio_and_movies();  
-	    };
-	</script>
+{% extends "base.html" %}
+
+{% block css %}
+    <link type="text/css" rel="stylesheet" media="all" href="{{MEDIA_URL}}/css/default.css" />
+    <link type="text/css" rel="stylesheet" media="all" href="{{MEDIA_URL}}/css/page.css" />
 {% endblock %}
-{% block title %}{% if page.title %}{{ page.title }}{% else %}{{ block.super }}{% endif %}{% endblock %}
-{% block content %}
-{% if page.title %}
-<a href="./edit/">Edit this page</a>
-<h1>{{ page.title }}</h1>
-{% endif %}
-{{ page_content|safe }}
+
+{% block body %}
+<body id="body">
+    <div id="all">
+        <div id="header">
+	        <h1><a href="/">DocBox Example Site</a></h1>
+        </div>
+	    <div id="content">
+		{% block content %}{% endblock %}
+	    </div>
+	</div>
+</body>
 {% endblock %}

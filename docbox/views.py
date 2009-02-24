@@ -1,7 +1,7 @@
 import os
 import codecs
 
-from settings import DOCBOX_DOC_ROOT, DEBUG
+from settings import DOCBOX_DOC_ROOT, DOCBOX_URL, DEBUG
 
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
@@ -32,7 +32,7 @@ def view(request, url):
         page = Page.from_file(fname)
         page_content = page.render(request)
 
-        return render_to_response('docbox/view.html', {'page': page, 'page_content': page_content}, 
+        return render_to_response('docbox/view_page.html', {'page': page, 'page_content': page_content}, 
             context_instance=RequestContext(request))
     else:
         raise Http404()
@@ -74,7 +74,7 @@ def view_writer_project(request, project_id):
     changes = project is not None and project.docChanges() or []
 
     return render_to_response('docbox/view_writer_project.html', 
-        {'form': form, 'projects': projects, 'project': project, 'changes': changes }, 
+        {'DOCBOX_URL': DOCBOX_URL, 'form': form, 'projects': projects, 'project': project, 'changes': changes }, 
         context_instance=RequestContext(request))
 
 def handle_commit_or_revert(post, project):
@@ -123,8 +123,11 @@ def view_writer_page(request, project_id, page):
             return HttpResponseRedirect("/%s/%s/edit/" % (project.identifier, page_name))
 
     changes = project.docChanges()
+
+    if page is not None and page != "":
+        page = project.get_page(page)
         
     return render_to_response('docbox/view_writer_page.html', 
-        {'project': project, 'documentation': documentation, 'page': page, 'changes': changes, 'projects': projects, 'page_name_error': page_name_error }, 
+        {'DOCBOX_URL': DOCBOX_URL, 'project': project, 'documentation': documentation, 'page': page, 'changes': changes, 'projects': projects, 'page_name_error': page_name_error }, 
         context_instance=RequestContext(request))
 
