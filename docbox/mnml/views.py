@@ -79,7 +79,7 @@ def upload(request, project_id):
 
 @login_required
 def list_mobs(request, project_id):
-    project = Project.objects.get(identifier=project_id)
+    project = get_object_or_404(Project, identifier=project_id)
     editor_id = request.GET['editor_id']
 
     images = [Mob(project, image, 'img') for image in project.get_images()]
