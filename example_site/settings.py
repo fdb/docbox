@@ -14,7 +14,7 @@ USE_I18N = True
 
 PROJECT_ROOT = os.path.dirname(__file__)
 sys.path.append(PROJECT_ROOT)
-DOCBOX_ROOT = os.path.dirname(PROJECT_ROOT)
+DOCBOX_ROOT = DOCBOX_PROJECTS_ROOT = os.path.dirname(PROJECT_ROOT)
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
 DOCBOX_URL = ''
 MEDIA_URL = '/media'
@@ -24,7 +24,9 @@ ADMIN_MEDIA_PREFIX = '/media/admin/'
 sys.path.append(DOCBOX_ROOT)
 
 # You must set this to let DocBox know where your documentation is.
-DOCBOX_DOC_ROOT = os.path.join(DOCBOX_ROOT, 'docs')
+DOCBOX_DOC_ROOT = os.path.join(DOCBOX_PROJECTS_ROOT, 'docs')
+DOCBOX_SRC_ROOT = os.path.join(DOCBOX_PROJECTS_ROOT, 'src')
+#sys.path.append(DOCBOX_SRC_ROOT)
 
 SECRET_KEY = '<secret>'
 
@@ -37,6 +39,14 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'docbox.context_processors.url',
 )
 
 ROOT_URLCONF = 'example_site.urls'
