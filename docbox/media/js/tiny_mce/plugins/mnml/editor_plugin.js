@@ -13,7 +13,7 @@
     		var editor_id = inst.editorId;
     		var html = '';
     		html += '<div id="' + editor_id + '_link_div" class="_ml_link_div" style="background:#ccc;position:absolute;display:none;top:0;left:0;width:500px">';
-    		html += '<a href="#" class="lbCloseButton" onclick="tinyMCE.execInstanceCommand(\'' + editor_id + '\', \'mlLinkCancel\');"><img src="/media/js/tiny_mce/plugins/mnml/img/close.gif" alt="Close" /></a>';
+    		html += '<a href="#" class="lbCloseButton" onclick="tinyMCE.execInstanceCommand(\'' + editor_id + '\', \'mlLinkCancel\');"><img src="' + DOCBOX_MEDIA_URL + '/js/tiny_mce/plugins/mnml/img/close.gif" alt="Close" /></a>';
     		html += '<div id="' + editor_id + '_link_pages"></div>';
     		html += '</div>';		
     		return html;
@@ -22,7 +22,7 @@
     		var editor_id = inst.editorId;
     		var html = '';
     		html += '<div id="' + editor_id + '_image_div" class="_ml_img_div" style="background:#ccc;position:absolute;display:none;top:0;left:0;width:500px">';
-    		html += '<a href="#" class="lbCloseButton" onclick="tinyMCE.execInstanceCommand(\'' + editor_id + '\', \'mlImageCancel\');"><img src="/media/js/tiny_mce/plugins/mnml/img/close.gif" alt="Close" /></a>';
+    		html += '<a href="#" class="lbCloseButton" onclick="tinyMCE.execInstanceCommand(\'' + editor_id + '\', \'mlImageCancel\');"><img src="' + DOCBOX_MEDIA_URL + '/js/tiny_mce/plugins/mnml/img/close.gif" alt="Close" /></a>';
     		html += '<div id="' + editor_id + '_image_inner"></div>';
     		html += '</div>';
     		return html;
@@ -64,14 +64,14 @@
 			ed.addCommand('mlDocCreate', function(value) {
 				var url_parts = value.split('/');
 				var fname = url_parts[url_parts.length-1];
-				var doc_html = '<a class="doclink" href="' + value + '"><img src="/media/images/doc.gif" alt="Document" width="9" height="11">' + fname + '</a>';
+				var doc_html = '<a class="doclink" href="' + value + '"><img src="' + DOCBOX_MEDIA_URL + '/images/doc.gif" alt="Document" width="9" height="11">' + fname + '</a>';
 				ed.execCommand('inserthtml', false, doc_html);
 				ed.execCommand('mlImageCancel');
 				return true;
 			});
 
 			ed.addCommand('mlAudioCreate', function(value) {
-				var doc_html = '<img class="audio_file" src="/media/images/blank.gif" title="' + value + '" />\n';
+				var doc_html = '<img class="audio_file" src="' + DOCBOX_MEDIA_URL + '/images/blank.gif" title="' + value + '" />\n';
 				ed.execCommand('inserthtml', false, doc_html);
 				ed.execCommand('mlImageCancel');
 				return true;
@@ -86,7 +86,7 @@
 					var height = 395;
 					var full_url = movie_url;
 					var html = ''
-						+ '<img class="movie_embedded" src="/media/images/blank.gif" title="' + full_url + '" '
+						+ '<img class="movie_embedded" src="' + DOCBOX_MEDIA_URL + '/images/blank.gif" title="' + full_url + '" '
 						+ 'width="' + width + '" height="' + height + '" />\n';
 					ed.execCommand('inserthtml', false, html);
     				ed.execCommand('mlImageCancel');
@@ -103,7 +103,7 @@
 				var width = value.width;
 				var height = value.height;
 				var html = ''
-					+ '<img class="movie_file" src="/media/images/blank.gif" title="' + value.url + '" '
+					+ '<img class="movie_file" src="' + DOCBOX_MEDIA_URL + '/images/blank.gif" title="' + value.url + '" '
 					+ 'width="' + width + '" height="' + height + '" />\n';
 				ed.execCommand('inserthtml', false, html);
 				ed.execCommand('mlImageCancel');

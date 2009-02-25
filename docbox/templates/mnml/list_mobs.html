@@ -76,11 +76,11 @@
 		<div id="_ml_content_upload" class="_ml_tab_content" style="display:none">
 			<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" width="400" height="150" id="sendr" align="middle">
 				<param name="allowScriptAccess" value="sameDomain" />
-				<param name="movie" value="/media/swf/sendr.swf" />
+				<param name="movie" value="{{ DOCBOX_MEDIA_URL }}/swf/sendr.swf" />
 				<param name="quality" value="high" />
 				<param name="bgcolor" value="#ffffff" />
 				<param name="flashvars" value="project_id={{ project.identifier }}&editor_id={{editor_id}}" />
-				<embed src="/media/swf/sendr.swf" flashvars="project_id={{ project.identifier }}&editor_id={{editor_id}}" quality="high" bgcolor="#ffffff" width="400" height="150" name="sendr" align="middle" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+				<embed src="{{ DOCBOX_MEDIA_URL }}/swf/sendr.swf" flashvars="project_id={{ project.identifier }}&editor_id={{editor_id}}" quality="high" bgcolor="#ffffff" width="400" height="150" name="sendr" align="middle" allowScriptAccess="sameDomain" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
 			</object>
 		</div>
     </div>

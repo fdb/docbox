@@ -1,0 +1,7 @@
+pre .python { background: rgb(235,235,225); border: 1px solid #ddd; color: #555; padding: 2px 5px 2px 5px; }
+pre .python br:first-child { display: none; }
+pre .python span.comment { color: #999999; }
+pre .python span.keyword { color: #530035; }
+pre .python span.identifier { color: red; }
+pre .python span.string { color: #ff0080; }
+pre .python { margin: 10px 0;}

@@ -16,8 +16,10 @@ PROJECT_ROOT = os.path.dirname(__file__)
 sys.path.append(PROJECT_ROOT)
 DOCBOX_ROOT = DOCBOX_PROJECTS_ROOT = os.path.dirname(PROJECT_ROOT)
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
+DOCBOX_MEDIA_ROOT = os.path.join(DOCBOX_ROOT, 'docbox', 'media')
 DOCBOX_URL = ''
 MEDIA_URL = '/media'
+DOCBOX_MEDIA_URL = '/media/docbox'
 ADMIN_MEDIA_PREFIX = '/media/admin/'
 
 # The docbox module is in the parent folder.
@@ -47,6 +49,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.i18n',
     'django.core.context_processors.media',
     'docbox.context_processors.url',
+    'docbox.context_processors.media',
 )
 
 ROOT_URLCONF = 'example_site.urls'

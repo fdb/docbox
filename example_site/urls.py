@@ -4,8 +4,8 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
+    (r'^media/docbox/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.DOCBOX_MEDIA_ROOT}),
     (r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     (r'^admin/(.*)', admin.site.root),
     (r'', include('docbox.urls')),
-    
 )

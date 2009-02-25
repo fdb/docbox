@@ -1,11 +1,14 @@
 {% extends "writer.html" %}
 {% block title %}Write some docu{% endblock%}
 {% block js %}
-<script>var MEDIA_URL = "{{ MEDIA_URL }}";</script>
-<script src="/media/js/tiny_mce/tiny_mce.js"></script>
-<script src="/media/js/prototype.js"></script>
-<script src="/media/js/lb.js"></script>
-<script src="/media/js/load_tinymce.js"></script>
+<script>
+    var MEDIA_URL = "{{ MEDIA_URL }}";
+    var DOCBOX_MEDIA_URL = "{{ DOCBOX_MEDIA_URL }}";
+</script>
+<script src="{{ DOCBOX_MEDIA_URL }}/js/tiny_mce/tiny_mce.js"></script>
+<script src="{{ DOCBOX_MEDIA_URL }}/js/prototype.js"></script>
+<script src="{{ DOCBOX_MEDIA_URL }}/js/lb.js"></script>
+<script src="{{ DOCBOX_MEDIA_URL }}/js/load_tinymce.js"></script>
 {% endblock %}
 {% block content %}
 
