@@ -5,6 +5,7 @@
     var DOCBOX_URL = "{{ DOCBOX_URL }}";
     var DOCBOX_MEDIA_URL = "{{ DOCBOX_MEDIA_URL }}";
     var MEDIA_URL = "{{ MEDIA_URL }}";
+    var CONTENT_CSS = DOCBOX_MEDIA_URL + "/css/default.css";
 </script>
 <script src="{{ DOCBOX_MEDIA_URL }}/js/tiny_mce/tiny_mce.js"></script>
 <script src="{{ DOCBOX_MEDIA_URL }}/js/prototype.js"></script>
@@ -47,22 +48,22 @@
         {% if changes %}
         <div id="changes">
         	Branch: <select><option>master</option><option>v1.0</option></select>
-        	<span style="float:right;">
-        	<strong><a href="#" onclick="document.getElementById('commit').style.display='block';">{{ changes|length }} documentation changes</a></strong>
+        	<span id="doc-changes">
+        	<strong><a href="#" onclick="if (document.getElementById('commit').style.display =='none') document.getElementById('commit').style.display='block'; else document.getElementById('commit').style.display='none';">{{ changes|length }} documentation changes</a></strong>
         	</span>
         	<div style="display:none;" id="commit">
-        	<div style="margin:10px 0 0 0;">
+        	<div>
         		<table>
         		    {% for change in changes %}
         		    <tr>
-        			<td>{{ change.text_status }}</td><td><a href="{{ change.view_url }}">{{ change.displayname }}</td></li>
+        			<td class="status">{{ change.text_status }}</td><td><a href="{{ change.view_url }}">{{ change.displayname }}</td></li>
         			</tr>
         			{% endfor %}
         		</table>
         	</div>
-        	<div style="margin:10px 0 0 0;"><textarea style="width:719px;height:100px;" name="commitString"></textarea></div>
+        	<div><textarea id="commitString" name="commitString"></textarea></div>
         	<div>
-        	<span style="float:right">
+        	<span id="actions">
         	<input type="submit" name="revert" value="Cancel" />
         	<input type="submit" name="commit" value="Commit" />
         	</span>
@@ -78,7 +79,7 @@
         <h2>{{ project.identifier }}: Create a new page</h2>
         <label for="page_name">Title:</label><input type="input" id="page_name" name="page-name" maxlength="200" value="{{ page.name }}" /> {% if page_name_error %}<span id="page_name_error">{{ page_name_error }}</span>{% endif %}
         {% endif %}
-        <textarea id="docarea" name="doc-content" class="mceEditor" style="width:742px;height: 350px;">
+        <textarea id="docarea" name="doc-content" class="mceEditor">
             {{ documentation|safe }}
         </textarea>
         <input type="submit" value="Submit" />

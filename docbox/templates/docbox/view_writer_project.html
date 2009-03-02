@@ -40,22 +40,22 @@
     {% if changes %}
     <div id="changes">
     	Branch: <select><option>master</option><option>v1.0</option></select>
-    	<span style="float:right;">
-    	<strong><a href="#" onclick="document.getElementById('commit').style.display='block';">{{ changes|length }} documentation changes</a></strong>
+    	<span id="doc-changes">
+    	<strong><a href="#" onclick="if (document.getElementById('commit').style.display =='none') document.getElementById('commit').style.display='block'; else document.getElementById('commit').style.display='none';">{{ changes|length }} documentation changes</a></strong>
     	</span>
     	<div style="display:none;" id="commit">
-    	<div style="margin:10px 0 0 0;">
+    	<div>
     		<table>
     		    {% for change in changes %}
     		    <tr>
-        			<td>{{ change.text_status }}</td><td><a href="{{ change.view_url }}">{{ change.displayname }}</td></li>
+        			<td class="status">{{ change.text_status }}</td><td><a href="{{ change.view_url }}">{{ change.displayname }}</td></li>
     			</tr>
     			{% endfor %}
     		</table>
     	</div>
-    	<div style="margin:10px 0 0 0;"><textarea style="width:719px;height:100px;" name="commitString"></textarea></div>
+    	<div><textarea id="commitString" name="commitString"></textarea></div>
     	<div>
-    	<span style="float:right">
+    	<span id="actions">
     	<input type="submit" name="revert" value="Cancel" />
     	<input type="submit" name="commit" value="Commit" />
     	</span>

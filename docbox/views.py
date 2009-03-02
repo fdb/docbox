@@ -1,7 +1,7 @@
 import os
 import codecs
 
-from settings import DOCBOX_DOC_ROOT, DEBUG
+from settings import DOCBOX_DOC_ROOT, DOCBOX_URL, DEBUG
 
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
@@ -120,7 +120,7 @@ def view_writer_page(request, project_id, page):
             write_to_file(filepath, documentation)
             if is_new:
                 project.add(page_name)
-            return HttpResponseRedirect("/%s/%s/edit/" % (project.identifier, page_name))
+            return HttpResponseRedirect("%s/%s/%s/edit/" % (DOCBOX_URL, project.identifier, page_name))
 
     changes = project.docChanges()
 

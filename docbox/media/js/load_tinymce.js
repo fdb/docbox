@@ -2,7 +2,7 @@ tinyMCE.init({
 	mode : "textareas",
 	theme : "advanced",
     plugins: "safari,mnml",
-	content_css : DOCBOX_MEDIA_URL + "/css/default.css", // CHANGE THIS
+	content_css : CONTENT_CSS,
 	editor_selector : "mceEditor",
 	theme_advanced_buttons1_add : "mnml",
 	theme_advanced_toolbar_location : "top",
