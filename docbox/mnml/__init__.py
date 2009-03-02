@@ -1,5 +1,6 @@
 import os
 from docbox.util import quicktime as quicktime_util
+from settings import DOCBOX_URL
 
 class Mob(object):
     """Mobs are Media OBjects linked to various types of objects."""
@@ -17,7 +18,7 @@ class Mob(object):
             self.width = self.height = 0
     
     def get_url(self):
-        return "/project/%s/%s" % (self.project.identifier, self.file_name)
+        return "%s/project/%s/%s" % (DOCBOX_URL, self.project.identifier, self.file_name)
 
     def get_thumb_fname(self):
         if self.type == 'mov':          
@@ -26,4 +27,4 @@ class Mob(object):
             return "thumb-%s" % self.file_name        
 
     def get_thumb_url(self):
-        return "/project/%s/%s" % (self.project.identifier, self.get_thumb_fname())
+        return "%s/project/%s/%s" % (DOCBOX_URL, self.project.identifier, self.get_thumb_fname())

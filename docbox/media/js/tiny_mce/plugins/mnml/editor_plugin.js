@@ -40,7 +40,7 @@
 			ed.addCommand('mlImage', function() {
 				var image_div = document.getElementById(editor_id + '_image_div');
 				var project_id = _mlGetProjectIdentifier();
-				var img_url = '/mnml/mobs/' + project_id + '/?editor_id=' + editor_id;
+				var img_url = DOCBOX_URL + '/mnml/mobs/' + project_id + '/?editor_id=' + editor_id;
 				new Ajax.Updater(editor_id + "_image_inner", img_url, {asynchronous:true, method:'get'});
 				lbShow(image_div);
 			});
